@@ -1,0 +1,18 @@
+[deps]
+AMDGPU = "21141c5a-9bdb-4563-92ae-f87d6854732e"
+FilterGraphAlgorithms = "8914fa96-dfe6-4d3c-aced-40e6da1f6420"
+FilterGraphs = "8053475d-7091-4a8a-adbc-8ed688b6da8d"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[sources]
+FilterGraphAlgorithms = {path = "../.."}
+FilterGraphs = {path = "../../../FilterGraphs"}
+
+[compat]
+FilterGraphAlgorithms = "0.13"
+AMDGPU = "2"
+KernelAbstractions = "0.10"
+FilterGraphs = "0.9, 0.10"
+julia = "1.13"

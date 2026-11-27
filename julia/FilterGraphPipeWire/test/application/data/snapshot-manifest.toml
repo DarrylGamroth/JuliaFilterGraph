@@ -1,0 +1,21 @@
+# Generated snapshot receipts; canonical sources are listed below.
+# Regenerate selected copies and hashes with julia test/update_snapshots.jl <source>...
+format_version = 1
+
+[[snapshot]]
+source = "julia/FilterGraphPipeWire/test/data/leaky-graph.conf"
+path = "leaky-graph.conf"
+sha256 = "32888d2c1c4e1715ddce3d4231d558d634b6ba72e90328d215fc766ce8c59f15"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "julia/FilterGraphPipeWire/test/data/cred2-ingress.conf"
+path = "cred2-ingress.conf"
+sha256 = "d979ef3ce237b64a1f575e774e944475552287f03df9891e8ea7a062dbfe8781"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "julia/FilterGraphs/test/data/pixel-pyramid-row.conf"
+path = "pixel-pyramid-row.conf"
+sha256 = "d218aeeb6c2c083c7264fdb1ce20670841bcb9bf9714c329dd3c3b578da6a965"
+generated_header_lines = 2

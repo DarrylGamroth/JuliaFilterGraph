@@ -1,0 +1,45 @@
+# Frozen from the external Rust FGN PdmCommandPowerLimitF32 implementation at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94. Float32 bit patterns were
+# captured by executing that revision with the cases below.
+
+[[cases]]
+name = "inside"
+max_command_power = 25.0
+requested = [1.0, 2.0]
+expected = [1.0, 2.0]
+expected_bits = [1065353216, 1073741824]
+
+[[cases]]
+name = "boundary"
+max_command_power = 25.0
+requested = [3.0, 4.0]
+expected = [3.0, 4.0]
+expected_bits = [1077936128, 1082130432]
+
+[[cases]]
+name = "projected"
+max_command_power = 4.0
+requested = [3.0, 4.0, 0.0]
+expected = [1.2, 1.6, 0.0]
+expected_bits = [1067030938, 1070386381, 0]
+
+[[cases]]
+name = "zero-maximum"
+max_command_power = 0.0
+requested = [1.0, -2.0, 0.0]
+expected = [0.0, -0.0, 0.0]
+expected_bits = [0, 2147483648, 0]
+
+[[cases]]
+name = "large-finite"
+max_command_power = 1.0
+requested = [3.4028235e38, -3.4028235e38]
+expected = [0.70710653, -0.70710653]
+expected_bits = [1060439279, 3207922927]
+
+[[cases]]
+name = "zero-command"
+max_command_power = 4.0
+requested = [0.0, -0.0, 0.0]
+expected = [0.0, -0.0, 0.0]
+expected_bits = [0, 2147483648, 0]

@@ -1,0 +1,1145 @@
+"""
+Transport-independent numerical algorithms and their execution contract.
+
+An admitted operation has a logically read-only prepared plan, an exclusively
+owned mutable workspace, caller-owned input and output, and one complete
+`process!` entry point. Preparation-only plans may use scientific solvers and
+produce artifacts for caller-owned review and activation. Plans
+selected for an operating path require separate allocation, bounded-work, and
+timing qualification.
+
+PipeWire transport, SPA projection, graph scheduling, artifact serialization,
+and activation remain outside this module. Algorithms that process acquisition
+quanta use transport-neutral `SampleMetadata` rather than transport headers.
+"""
+module FilterGraphAlgorithms
+
+export required_sample_metadata
+
+using LinearAlgebra
+using SIMD: Vec
+import SimpleChains
+import Statistics
+import AdaptiveOpticsCalibration
+import GenericLinearAlgebra # Extends LinearAlgebra factorizations for generic floats.
+
+include("processing.jl")
+include("progress.jl")
+include("properties/schema.jl")
+include("properties/updates.jl")
+include("properties/binding.jl")
+include("declarations/description.jl")
+include("schemas.jl")
+include("declarations/ports.jl")
+include("sample_metadata.jl")
+include("declarations/prepared.jl")
+include("declarations/parser.jl")
+include("declarations/algorithm_macro.jl")
+include("declarations/catalog.jl")
+include("capture.jl")
+include("splitmix64.jl")
+include("algorithms/scc/chopped_image_difference.jl")
+include("algorithms/scc/pixel_residual.jl")
+include("algorithms/scc/spatial_carrier_demodulation.jl")
+include("algorithms/scc/weighted_regularized_reconstruction.jl")
+include("acquisition/cred2_trigger_metadata.jl")
+include("algorithms/image/pixel_calibration.jl")
+include("algorithms/image/pixel_calibration_f32.jl")
+include("algorithms/image/detector_readout.jl")
+include("algorithms/image/pixel_selection.jl")
+include("algorithms/image/pixel_validity.jl")
+include("algorithms/image/region_extraction.jl")
+include("algorithms/control/leaky_integrator.jl")
+include("algorithms/control/biquad_cascade.jl")
+include("algorithms/vector/vector_linear_combination.jl")
+include("lowpass_design.jl")
+include("algorithms/control/frame_delay.jl")
+include("algorithms/statistics/array_statistics.jl")
+include("algorithms/control/closed_loop_correction.jl")
+include("algorithms/control/closed_loop_integrator.jl")
+include("algorithms/control/pseudo_open_loop_reconstruction.jl")
+include("algorithms/optical_gain/correction.jl")
+include("algorithms/optical_gain/dither.jl")
+include("algorithms/optical_gain/estimator.jl")
+include("algorithms/optical_gain/update.jl")
+include("algorithms/docrime/excitation.jl")
+include("algorithms/docrime/covariance.jl")
+include("algorithms/reconstructor_factorization.jl")
+include("algorithms/wavefront_sensor/center_of_gravity.jl")
+include("algorithms/wavefront_sensor/weighted_center_of_gravity.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_image.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_summary.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_weighted_centroid.jl")
+include("algorithms/wavefront_sensor/dense_reconstruction.jl")
+include("algorithms/wavefront_sensor/dense_vector_reconstruction.jl")
+include("algorithms/vector/physical_offset_reference.jl")
+include("algorithms/wavefront_sensor/incremental_dense_reconstruction.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_reconstruction.jl")
+include("algorithms/wavefront_sensor/pyramid_pixel.jl")
+include("algorithms/wavefront_sensor/pyramid_pupil_image.jl")
+include("algorithms/wavefront_sensor/pyramid_pupil_flux.jl")
+include("algorithms/wavefront_sensor/pyramid_image.jl")
+include("algorithms/wavefront_sensor/bi_o_edge_image.jl")
+include("algorithms/wavefront_sensor/zernike_pupil_signal.jl")
+include("algorithms/wavefront_sensor/curvature_paired_signal.jl")
+include("algorithms/wavefront_sensor/row_block.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_measurement_block.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_weighted_measurement_block.jl")
+include("algorithms/wavefront_sensor/pyramid_pixel_row.jl")
+include("algorithms/wavefront_sensor/pyramid_measurement_block.jl")
+include("algorithms/wavefront_sensor/pyramid_row_reconstruction.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_row_reconstruction.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_readout_reconstruction.jl")
+include("algorithms/wavefront_sensor/shack_hartmann_readout_measurement_block.jl")
+include("algorithms/wavefront_sensor/pyramid_readout_reconstruction.jl")
+include("algorithms/wavefront_sensor/pyramid_readout_measurement_block.jl")
+include("algorithms/wavefront_sensor/pyramid_reconstruction.jl")
+include("algorithms/wavefront_sensor/pyramid_pupil_reconstruction.jl")
+include("algorithms/deformable_mirror/actuator_partition.jl")
+include("algorithms/deformable_mirror/cpu_projection.jl")
+include("algorithms/deformable_mirror/controller_to_vdm.jl")
+include("algorithms/deformable_mirror/thin_plate_vdm_completion.jl")
+include("algorithms/deformable_mirror/vdm_to_pdm.jl")
+include("algorithms/deformable_mirror/pdm_system_flat.jl")
+include("algorithms/deformable_mirror/pdm_engineering_offset.jl")
+include("algorithms/deformable_mirror/vdm_shape_offset.jl")
+include("algorithms/deformable_mirror/limiter_precision.jl")
+include("algorithms/deformable_mirror/pdm_command_power_limit.jl")
+include("algorithms/deformable_mirror/inter_actuator_stroke_limit.jl")
+include("algorithms/deformable_mirror/pdm_stroke_optimization.jl")
+include("algorithms/deformable_mirror/pdm_command.jl")
+include("algorithms/control/corrector_allocation.jl")
+include("algorithms/deformable_mirror/pdm_feedback_to_vdm.jl")
+include("algorithms/deformable_mirror/vdm_feedback_to_controller.jl")
+include("algorithms/calibration/interaction_matrix_stability.jl")
+include("algorithms/calibration/matched_calibration_differencing.jl")
+include("algorithms/calibration/structured_interaction_matrix.jl")
+include("algorithms/calibration/calibration_probe.jl")
+include("algorithms/docrime/interaction_matrix.jl")
+include("algorithms/scc/push_pull_response.jl")
+include("algorithms/scc/reconstructor_preparation.jl")
+include("algorithms/scc/reconstruction.jl")
+include("algorithms/scc/correction.jl")
+include("algorithms/wavefront_sensor/llowfs_model.jl")
+include("algorithms/wavefront_sensor/ml_llowfs.jl")
+"""
+    algorithms()
+
+Return the built-in Julia Algorithm declarations that have passed their
+declaration, numerical, transactional, and warmed-allocation contract tests.
+Callers may concatenate this tuple with declarations from scientist-owned
+packages when preparing a Graph; no mutable registry is involved. This is the
+Node-ready selection, not an inventory of direct Plan implementations or the
+complete FGN migration target.
+"""
+algorithms() = (
+    LeakyIntegratorF32,
+    BiquadCascadeF32,
+    VectorLinearCombinationF32,
+    VectorOffsetF32,
+    PhysicalOffsetReferenceF32,
+    CorrectorAllocationF32,
+    FrameDelayF32,
+    ArrayStatisticsF32,
+    DocrimeExcitationF32,
+    DocrimeBinaryExcitationF32,
+    DocrimeCovarianceF32,
+    DocrimeOpenLoopInteractionMatrixF32,
+    DocrimeClosedLoopInteractionMatrixF32,
+    PixelCalibrationU16F32,
+    PixelCalibrationF32,
+    PixelCalibrationRowU16F32,
+    PixelCalibrationReadoutU16F32,
+    DetectorFrameAssemblerF32,
+    PixelSelectionF32,
+    PixelValidityF32,
+    RegionExtractionF32,
+    SccPushPullResponseF32,
+    ChoppedImageDifferenceF32,
+    ChoppedDetectorDifferenceF32,
+    SccPixelResidualF32,
+    SccSpatialCarrierDemodulationF32,
+    SccWeightedRegularizedReconstructorF32,
+    SccReconstructorF32,
+    SccCorrectionF32,
+    MlLlowfsF32,
+    CenterOfGravityF32,
+    WeightedCenterOfGravityF32,
+    ShackHartmannImageF32,
+    ShackHartmannSummaryF32,
+    ShackHartmannWeightedCentroidF32,
+    ShackHartmannMeasurementBlockF32,
+    ShackHartmannReadoutMeasurementBlockF32,
+    ShackHartmannWeightedMeasurementBlockF32,
+    ShackHartmannReconstructorF32,
+    ShackHartmannRowReconstructorF32,
+    ShackHartmannReadoutReconstructorF32,
+    PyramidPixelRowF32,
+    PyramidImageF32,
+    PyramidPupilImageF32,
+    PyramidPupilFluxU16F64,
+    PyramidPupilReconstructorF32,
+    BiOEdgeImageF32,
+    ZernikePupilSignalF32,
+    CurvaturePairedImageF32,
+    CurvaturePairedChannelF32,
+    PyramidMeasurementBlockF32,
+    PyramidReconstructorF32,
+    PyramidRowReconstructorF32,
+    PyramidReadoutReconstructorF32,
+    PyramidReadoutMeasurementBlockF32,
+    IncrementalDenseReconstructorF32,
+    DenseVectorReconstructorF32,
+    ClosedLoopCorrectionF32,
+    ClosedLoopIntegratorF32,
+    ValidityGatedClosedLoopIntegratorF32,
+    PseudoOpenLoopReconstructionF32,
+    OpticalGainCorrectionF32,
+    OpticalGainDitherF32,
+    OpticalGainEstimatorF32,
+    OpticalGainUpdateF32,
+    InteractionMatrixStabilityF32,
+    MatchedCalibrationDifferencingF32,
+    ModalPushPullF32,
+    ZonalPushPullF32,
+    HadamardPushPullF32,
+    ZonalInteractionMatrixF32,
+    HadamardInteractionMatrixF32,
+    ControllerToVdmF32,
+    VdmToPdmF32,
+    PdmSystemFlatF32,
+    PdmEngineeringOffsetF32,
+    VdmShapeOffsetF32,
+    PdmCommandPowerLimitF32,
+    InterActuatorStrokeLimitF32,
+    PdmStrokeOptimizationF32,
+    PdmCommandF32,
+    TipTiltCommandF32,
+    PdmFeedbackToVdmF32,
+    VdmFeedbackToControllerF32,
+)
+
+export SccCalibration, SccCorrectionF32, SccCorrectionF32Configuration
+export SccCorrectionFailure, SccMetadataMissing, SccExposureMismatch
+export SccSequenceInvalid, SccNonFiniteInput, SccNonFiniteCorrection
+export SccCommandOutOfBounds
+
+export MlLlowfsF32
+export MlLlowfsF32Configuration
+export MlLlowfsModel
+export normalize_llowfs!
+export MlLlowfsFailure
+export MlLlowfsInvalidFlux
+export MlLlowfsInvalidStandardDeviation
+export MlLlowfsNonFiniteInput
+export MlLlowfsNonFiniteOutput
+export MlLlowfsParametersMissing
+
+export ArrayStatisticsF32, ArrayStatisticsF32Configuration
+export ArrayStatisticsFailure, ArrayStatisticsNonFiniteInput
+export ArrayStatisticsNonFiniteOutput, ArrayStatisticsSampleCountOverflow
+
+export AbstractAlgorithmPlan
+export BIQUAD_COEFFICIENTS_V1
+export BiquadCascadeF32
+export BiquadCascadeF32Configuration
+export VectorLinearCombinationF32, VectorLinearCombinationF32Configuration
+export VectorOffsetF32, VectorOffsetF32Configuration
+export PhysicalOffsetReferenceF32, PhysicalOffsetReferenceF32Configuration
+public PhysicalOffsetReferencePlan
+export VdmShapeOffsetF32, VdmShapeOffsetF32Configuration, VdmShapeOffsetPlan
+export VectorLinearCombinationPlan, VectorLinearCombinationWorkspace
+export VectorLinearCombinationFailure, VectorLinearCombinationNonFiniteInput
+export VectorLinearCombinationNonFiniteOutput
+export BiquadCascadePlan
+export BiquadCascadeWorkspace
+export BiquadCascadeFailure
+export BiquadCascadeNonFiniteInput
+export BiquadCascadeNonFiniteOutput
+export design_lowpass
+export biquad_cascade_state
+export CorrectorStagePlan, CorrectorAllocationPlan, CorrectorAllocationWorkspace
+export CorrectorAllocationF32, CorrectorAllocationF32Configuration
+export CorrectorAllocationFailure, CorrectorAllocationNonFiniteInput, CorrectorAllocationNonFiniteOutput
+export AbstractAlgorithmDeclaration
+export algorithm_catalog, algorithm_description
+export AlgorithmOperation
+export ACTIVE_TO_FULL_VDM_PROJECTION_V1
+export AlgorithmConfiguration
+export AlgorithmFormat
+export AlgorithmPort
+export AlgorithmProcessComplete
+export AlgorithmProcessDeferred
+export AlgorithmProcessResult
+export DenseF32Operation
+export ArrayLayout
+export BACKGROUND_CALIBRATION_V1
+export CALIBRATION_CYCLE_COMPLETE_V1
+export CALIBRATION_PATTERN_INDEX_V1
+export CALIBRATION_PROBE_AMPLITUDES_V1
+export CALIBRATION_PROBE_POLARITY_V1
+export CALIBRATED_PIXEL_VALIDITY_V1
+export CalibrationProbeNegative
+export CalibrationProbePolarity
+export CalibrationProbePositive
+export CalibrationProbeStep
+export CalibrationProbeWorkspace
+export CaptureSupport
+export ColumnMajorLayout
+export CALIBRATED_PIXEL_ROW_BLOCK_V1
+export CALIBRATED_PIXEL_READOUT_BLOCK_V1
+export CALIBRATED_PIXELS_V1
+export BI_O_EDGE_CALIBRATION_SIGNATURE_V1
+export BI_O_EDGE_FRAME_CALIBRATION_SIGNATURE_V1
+export BI_O_EDGE_NORMALIZATION_DIVISOR_V1
+export BI_O_EDGE_OPTICAL_GAIN_V1
+export BI_O_EDGE_REFERENCE_SIGNAL_V1
+export BI_O_EDGE_SIGNAL_V1
+export BI_O_EDGE_SUPPORT_V1
+export ZERNIKE_PUPIL_SIGNAL_CALIBRATION_SIGNATURE_V1
+export ZERNIKE_PUPIL_SIGNAL_FRAME_CALIBRATION_SIGNATURE_V1
+export ZERNIKE_PUPIL_SIGNAL_INCIDENCE_FLUX_V1
+export ZERNIKE_PUPIL_SIGNAL_NORMALIZATION_DIVISOR_V1
+export ZERNIKE_PUPIL_SIGNAL_REFERENCE_PUPIL_IMAGE_V1
+export ZERNIKE_PUPIL_SIGNAL_SUPPORT_V1
+export ZERNIKE_PUPIL_SIGNAL_V1
+export CURVATURE_PAIRED_IMAGE_V1
+export CURVATURE_PAIRED_CHANNELS_V1
+export CURVATURE_PAIRED_FRAME_CALIBRATION_SIGNATURE_V1
+export CURVATURE_PAIRED_CALIBRATION_SIGNATURE_V1
+export CURVATURE_PAIRED_SIGNAL_V1
+export CURVATURE_PAIRED_SUPPORT_V1
+export CURVATURE_PAIRED_REFERENCE_SIGNAL_V1
+export CURVATURE_PAIRED_BRANCH_SCALES_V1
+export CENTER_OF_GRAVITY_COORDINATES_V1
+export CENTER_OF_GRAVITY_FLUX_V1
+export CENTER_OF_GRAVITY_OFFSET_V1
+export CENTER_OF_GRAVITY_PIXELS_V1
+export CENTER_OF_GRAVITY_VALIDITY_V1
+export CENTER_OF_GRAVITY_WEIGHTS_V1
+export CenterOfGravityF32
+export CenterOfGravityF32Configuration
+export CenterOfGravityPlan
+export ClosedLoopCorrectionF32
+export ClosedLoopIntegratorF32, ClosedLoopIntegratorF32Configuration
+export ValidityGatedClosedLoopIntegratorF32, ValidityGatedClosedLoopIntegratorF32Configuration
+export ClosedLoopCorrectionF32Configuration
+export ClosedLoopCorrectionFailure
+export ClosedLoopCorrectionMissingFeedback
+export ClosedLoopCorrectionNonFiniteFeedback
+export ClosedLoopCorrectionNonFiniteInput
+export ClosedLoopCorrectionNonFiniteOutput
+export ClosedLoopCorrectionPlan
+export ClosedLoopCorrectionUnexpectedFeedback
+export ClosedLoopCorrectionWorkspace
+export ChoppedImageComplete
+export ChoppedImageDifferenceF32
+export ChoppedImageDifferenceF32Configuration
+export ChoppedDetectorDifferenceF32
+export ChoppedDetectorDifferenceF32Configuration
+export ChoppedImageDifferenceFailure
+export ChoppedImageDifferencePlan
+export ChoppedImageDifferenceWorkspace
+export ChoppedImageFringed
+export ChoppedImageMetadataMissing
+export ChoppedImageTriggerMissing
+export ChoppedImageSequenceInvalid
+export ChoppedImageExposureMismatch
+export ChoppedImageKind
+export ChoppedImageMixed
+export ChoppedImageAbsent
+export ChoppedImagePairStatus
+export ChoppedImagePriming
+export ChoppedImageUnfringed
+export NoCapture
+export CompleteTransition
+export CONTROLLER_COMMAND_V1
+export CONTROLLER_CONSTRAINT_FEEDBACK_V1
+export CONTROLLER_RESIDUAL_ERROR_V1
+export CONTROLLER_STATE_V1
+export CONTROLLER_TO_VDM_PROJECTION_V1
+export CORRECTOR_COORDINATE_V1
+export Cred2ChoppedImageKindFailure
+export Cred2UnexpectedImageTag
+export alternating_trigger_metadata
+export cred2_trigger_metadata
+export chopped_image_metadata
+export sample_chopped_image_kind
+export SampleTriggerState
+export SAMPLE_TRIGGER_ABSENT
+export SAMPLE_TRIGGER_LOW
+export SAMPLE_TRIGGER_HIGH
+export SAMPLE_TRIGGER_MIXED
+export SampleAcquisitionIdentity
+export SampleClock
+export SAMPLE_CLOCK_MONOTONIC
+export SAMPLE_CLOCK_TAI
+export SAMPLE_CLOCK_REALTIME
+export SAMPLE_CLOCK_MODEL
+export SampleReferenceTimestamp, sample_reference_timestamp
+export SampleExposureStart
+export sample_acquisition_identity
+export sample_exposure_start
+export sample_exposure_duration_nanoseconds
+export sample_trigger_state
+export sample_trigger_high
+export ControllerToVdmF32
+export ControllerToVdmF32Configuration
+export ControllerToVdmFailure
+export ControllerToVdmNonFiniteInput
+export ControllerToVdmNonFiniteOutput
+export ControllerToVdmPlan
+export ConstructionConfiguration
+export ConstructionProperty
+export ControlledVdmActuator
+export DocrimeClosedLoopInteractionMatrixPlan
+export DocrimeClosedLoopInteractionMatrixF32
+export DocrimeClosedLoopInteractionMatrixF32Configuration
+export DocrimeBinaryExcitationF32
+export DocrimeBinaryExcitationF32Configuration
+export DocrimeBinaryExcitationPlan
+export DocrimeConditioningCriteria
+export DocrimeCovarianceF32
+export DocrimeCovarianceF32Configuration
+export DocrimeCovarianceFailure
+export DocrimeCovarianceNonFiniteCalculation
+export DocrimeCovarianceNonFiniteCorrectorSample
+export DocrimeCovarianceNonFiniteMeasurements
+export DocrimeCovariancePlan
+export DocrimeCovarianceSampleCountNotRepresentable
+export DocrimeCovarianceSampleCountOverflow
+export DocrimeCovarianceSampleLimitReached
+export DocrimeCovarianceWorkspace
+export DocrimeCovariances
+export DocrimeInteractionMatrixArtifacts
+export DocrimeInteractionMatrixDiagnostics
+export DocrimeInteractionMatrixExcessiveCorrectorCorrelation
+export DocrimeInteractionMatrixFailure
+export DocrimeInteractionMatrixInsufficientCorrectorVariance
+export DocrimeInteractionMatrixInsufficientFactorizationPivot
+export DocrimeInteractionMatrixInsufficientSamples
+export DocrimeInteractionMatrixNonFiniteCorrelation
+export DocrimeInteractionMatrixNonFiniteCorrectorCovariance
+export DocrimeInteractionMatrixNonFiniteCrossCovariance
+export DocrimeInteractionMatrixNonFiniteFactorization
+export DocrimeInteractionMatrixNonFiniteNormalization
+export DocrimeInteractionMatrixNonFiniteSolve
+export DocrimeInteractionMatrixNonSymmetricCorrectorCovariance
+export DocrimeInteractionMatrixNonPositiveDefinite
+export DocrimeInteractionMatrixSampleCountNotRepresentable
+export DocrimeInteractionMatrixSampleCountOutOfRange
+export DocrimeInteractionMatrixStatus
+export DocrimeInteractionMatrixValid
+export DocrimeInteractionMatrixWorkspace
+export DocrimeExcitationF32
+export DocrimeExcitationF32Configuration
+export DocrimeExcitationFailure
+export DocrimeExcitationNonFiniteCalculation
+export DocrimeExcitationPlan
+export DocrimeExcitationWorkspace
+export DenseReconstructionFailure
+export DenseReconstructionNonFiniteInput
+export DenseReconstructionNonFiniteOutput
+export DenseReconstructorPlan
+export DenseReconstructorWorkspace
+export DenseVectorReconstructorF32
+export DenseVectorReconstructorF32Configuration
+export FrameDelayF32
+export FrameDelayF32Configuration
+export FrameDelayFailure
+export FrameDelayNonFiniteInput
+export FrameDelayPlan
+export FrameDelayWorkspace
+export DocrimeOpenLoopInteractionMatrixPlan
+export DocrimeOpenLoopInteractionMatrixF32
+export DocrimeOpenLoopInteractionMatrixF32Configuration
+export DOCRIME_EXCITATION_AMPLITUDE_V1
+export DOCRIME_EXCITATION_V1
+export DOCRIME_COVARIANCE_COMPLETE_V1
+export DOCRIME_COVARIANCE_SAMPLE_COUNT_V1
+export DOCRIME_CORRECTOR_VARIANCE_RANGE_V1
+export DOCRIME_INTERACTION_MATRIX_STATUS_COORDINATES_V1
+export DOCRIME_INTERACTION_MATRIX_STATUS_V1
+export DOCRIME_MAXIMUM_ABSOLUTE_CORRECTOR_CORRELATION_V1
+export DOCRIME_MINIMUM_FACTORIZATION_PIVOT_RATIO_V1
+export DEMANDED_PDM_COMMAND_V1
+export NATIVE_PDM_COMMAND_V1
+export DetectorFrameAssemblerF32
+export DetectorFrameAssemblerF32Configuration
+export DetectorFrameAssemblerFailure
+export DetectorFrameAssemblerMetadataMissing
+export DetectorFrameAssemblerPlan
+export DetectorFrameAssemblerWorkspace
+export DetectorReadoutPlan
+export DetectorReadoutRegion
+export DuplicatePropertyError
+export ExtrapolatedVdmActuator
+export FLAT_CALIBRATION_V1
+export FULL_TO_ACTIVE_VDM_PROJECTION_V1
+export FixedVdmActuator
+export GraphRebuildProperty
+export GraphRebuildConfiguration
+export GeneralOperation
+export HIDDEN_TO_SHAPE_PROJECTION_V1
+export HadamardPushPullF32
+export HadamardPushPullF32Configuration
+export HadamardPushPullPlan
+export HadamardInteractionMatrixF32
+export HadamardInteractionMatrixF32Configuration
+export HadamardInteractionMatrixPlan
+export InteractionMatrixStabilityCriteria
+export InteractionMatrixStabilityDiagnostics
+export InteractionMatrixStabilityF32
+export InteractionMatrixStabilityF32Configuration
+export InteractionMatrixStabilityFailure
+export InteractionMatrixStabilityExcessiveRelativeColumnDifference
+export InteractionMatrixStabilityExcessiveRelativeFrobeniusDifference
+export InteractionMatrixStabilityInput
+export InteractionMatrixStabilityInsufficientColumnNorm
+export InteractionMatrixStabilityNonFiniteCalculation
+export InteractionMatrixStabilityNonFiniteFirstWindow
+export InteractionMatrixStabilityNonFiniteSecondWindow
+export InteractionMatrixStabilityPlan
+export InteractionMatrixStabilityWorkspace
+export InteractionMatrixStabilityStatus
+export InteractionMatrixStabilityValid
+export INTERACTION_MATRIX_STABILITY_COLUMN_NORMS_V1
+export INTERACTION_MATRIX_STABILITY_RELATIVE_COLUMN_V1
+export INTERACTION_MATRIX_STABILITY_RELATIVE_FROBENIUS_V1
+export INTERACTION_MATRIX_STABILITY_STATUS_V1
+export INTER_ACTUATOR_STROKE_LIMIT_V1
+export InterActuatorStrokeLimitF32
+export InterActuatorStrokeLimitF32Configuration
+export InterActuatorStrokeLimitFailure
+export InterActuatorStrokeLimitNonFiniteInput
+export InterActuatorStrokeLimitPlan
+export IncrementalDenseReconstructionColumnOutOfRange
+export IncrementalDenseReconstructionCountOutOfRange
+export IncrementalDenseReconstructionDuplicateColumn
+export IncrementalDenseReconstructionFailure
+export IncrementalDenseReconstructionIncompleteSample
+export IncrementalDenseReconstructionMetadataMissing
+export IncrementalDenseReconstructionNonFiniteInput
+export IncrementalDenseReconstructionNonFiniteOutput
+export IncrementalDenseReconstructionWorkspace
+export IncrementalDenseReconstructorF32
+export IncrementalDenseReconstructorF32Configuration
+export LeakyIntegratorFailure
+export LeakyIntegratorPlan
+export LeakyIntegratorF32
+export LeakyIntegratorF32Configuration
+export LeakyIntegratorNonFiniteInput
+export LeakyIntegratorNonFiniteOutput
+export LeakyIntegratorWorkspace
+export LLOWFS_MODES_V1
+export MATCHED_CALIBRATION_FILTERED_V1
+export MatchedCalibrationDifferencingF32
+export MatchedCalibrationDifferencingF32Configuration
+export MatchedCalibrationDifferencingFailure
+export MatchedCalibrationDifferencingPlan
+export MatchedCalibrationDifferencingWorkspace
+export MatchedCalibrationNonFiniteCorrectorSample
+export MatchedCalibrationNonFiniteDifference
+export MatchedCalibrationNonFiniteMeasurements
+export ML_LLOWFS_PARAMETERS_V1
+export MODAL_POSITIVE_COMMANDS_V1
+export ModalPushPullF32
+export ModalPushPullF32Configuration
+export ModalPushPullPlan
+export NoProgress
+export NoPropertyConstraint
+export PDM_CONSTRAINT_FEEDBACK_V1
+export PDM_COMMAND_TO_NULL_MODES_V1
+export PDM_NULL_MODES_TO_COMMAND_V1
+export PDM_TO_VDM_PROJECTION_V1
+export PDM_SYSTEM_FLAT_V1
+export PDM_ENGINEERING_OFFSET_V1
+export PdmCommandF32
+export PdmCommandF32Configuration
+export TipTiltCommandF32
+export TipTiltCommandF32Configuration
+export PdmCommandFailure
+export PdmCommandNonFiniteInput
+export PdmCommandNonFiniteOutput
+export PdmCommandPlan
+export PdmCommandWorkspace
+export PdmCommandPowerLimitF32
+export PdmCommandPowerLimitF32Configuration
+export PdmCommandPowerLimitFailure
+export PdmCommandPowerLimitNonFiniteInput
+export PdmCommandPowerLimitPlan
+export PdmSystemFlatF32
+export PdmSystemFlatF32Configuration
+export PdmSystemFlatFailure
+export PdmSystemFlatNonFiniteInput
+export PdmSystemFlatNonFiniteOutput
+export PdmSystemFlatPlan
+export PdmEngineeringOffsetF32
+export PdmEngineeringOffsetF32Configuration
+export PdmEngineeringOffsetFailure
+export PdmEngineeringOffsetNonFiniteInput
+export PdmEngineeringOffsetNonFiniteOutput
+export PdmEngineeringOffsetPlan
+export PdmStrokeOptimizationF32
+export PdmStrokeOptimizationF32Configuration
+export PdmStrokeOptimizationFailure
+export PdmStrokeOptimizationNonFiniteInput
+export PdmStrokeOptimizationNonFiniteOutput
+export PdmStrokeOptimizationPlan
+export PdmStrokeOptimizationWorkspace
+export PSEUDO_OPEN_LOOP_CORRECTOR_TO_ERROR_V1
+export PSEUDO_OPEN_LOOP_INTERACTION_MATRIX_V1
+export PSEUDO_OPEN_LOOP_RECONSTRUCTOR_V1
+export PseudoOpenLoopNonFiniteCorrectorShape
+export PseudoOpenLoopNonFiniteOutput
+export PseudoOpenLoopNonFiniteResidualMeasurements
+export PseudoOpenLoopReconstructionF32
+export PseudoOpenLoopReconstructionF32Configuration
+export PseudoOpenLoopReconstructionFailure
+export PseudoOpenLoopReconstructionPlan
+export PseudoOpenLoopReconstructionWorkspace
+export PdmFeedbackToVdmF32
+export PdmFeedbackToVdmF32Configuration
+export PdmFeedbackToVdmFailure
+export PdmFeedbackToVdmNonFiniteInput
+export PdmFeedbackToVdmNonFiniteOutput
+export PdmFeedbackToVdmPlan
+export PdmFeedbackToVdmWorkspace
+export ProgressResult
+export ProgressSupport
+export PropertyAssignment
+export PropertyBinding
+export PropertyChoice
+export PropertyChoices
+export PropertyConstraint
+export PropertyConstraintError
+export PropertyGenerationExhausted
+export PropertyInfo
+export PropertyRange
+export PropertyRangeScalar
+export PropertyScalar
+export PropertySchemaError
+export PropertySpec
+export PropertyTypeError
+export PropertyUpdate
+export PropertyUpdateBusy
+export PropertyUpdateClassError
+export PREFERRED_PDM_COMMAND_V1
+export PHYSICAL_OPTICAL_GAIN_V1
+export OpticalGainCorrectionF32
+export OpticalGainCorrectionF32Configuration
+export OpticalGainCorrectionFailure
+export OpticalGainCorrectionNonFiniteInput
+export OpticalGainCorrectionNonFiniteOutput
+export OpticalGainCorrectionPlan
+export MIN_OPTICAL_GAIN_DITHER_FRAMES_PER_PERIOD
+export OPTICAL_GAIN_CALIBRATION_RESPONSE_V1
+export OPTICAL_GAIN_ACCEPTED_DITHER_MODES_V1
+export OPTICAL_GAIN_COMMAND_AMPLITUDE_V1
+export OPTICAL_GAIN_DITHER_COMMAND_V1
+export OPTICAL_GAIN_DITHER_ESTIMATE_V1
+export OPTICAL_GAIN_DITHER_PHASE_INDICES_V1
+export OPTICAL_GAIN_DITHER_RESPONSE_V1
+export OPTICAL_GAIN_DITHER_WINDOW_COMPLETE_V1
+export OPTICAL_GAIN_DITHER_WINDOW_FRAME_V1
+export OPTICAL_GAIN_ESTIMATE_COMPLETE_V1
+export OPTICAL_GAIN_ESTIMATE_VALIDITY_V1
+export OPTICAL_GAIN_PHASE_LAG_V1
+export OPTICAL_GAIN_RESPONSE_AMPLITUDE_V1
+export OPTICAL_GAIN_UPDATED_RECONSTRUCTED_MODES_V1
+export OpticalGainDitherF32
+export OpticalGainDitherF32Configuration
+export OpticalGainDitherMode
+export OpticalGainDitherPlan
+export OpticalGainDitherSchedule
+export OpticalGainDitherWorkspace
+export OpticalGainEstimatorF32
+export OpticalGainEstimatorF32Configuration
+export OpticalGainEstimatorFailure
+export OpticalGainEstimatorNonFiniteAccumulation
+export OpticalGainEstimatorNonFiniteCommand
+export OpticalGainEstimatorNonFiniteEstimate
+export OpticalGainEstimatorNonFiniteResponse
+export OpticalGainEstimatorPhaseIndexMismatch
+export OpticalGainEstimatorPlan
+export OpticalGainEstimatorWindowCompletionMismatch
+export OpticalGainEstimatorWindowFrameMismatch
+export OpticalGainEstimatorWindowFrameOutOfRange
+export OpticalGainEstimatorWorkspace
+export OpticalGainAssignment
+export OpticalGainUpdateCriteria
+export OpticalGainUpdateF32
+export OpticalGainUpdateF32Configuration
+export OpticalGainUpdateFailure
+export OpticalGainUpdateNonFiniteInput
+export OpticalGainUpdateNonFiniteOutput
+export OpticalGainUpdatePlan
+export OpticalGainUpdateWorkspace
+export PyramidPixelNonFiniteInput
+export PyramidPixelNonFiniteMean
+export PyramidPixelNonFiniteNormalizationGain
+export PyramidPixelNonFiniteOutput
+export PyramidPixelNumericalError
+export PyramidPixelOutput
+export PyramidPixelPlan
+export PyramidPixelStatus
+export PyramidPixelValid
+export PyramidPixelWorkspace
+export PyramidImageF32
+export PyramidImageF32Configuration
+export PyramidImageFailure
+export PyramidImageIncidenceFlux
+export PyramidImageInvalidNormalization
+export PyramidImageMeanValidFlux
+export PyramidImageNonFiniteInput
+export PyramidImageNonFiniteOutput
+export PyramidImageNormalization
+export PyramidImagePlan
+export PyramidImageWorkspace
+export BiOEdgeImageF32
+export BiOEdgeImageF32Configuration
+export BiOEdgeImageCalibrationMismatch
+export BiOEdgeImageFailure
+export BiOEdgeImageIncidenceFlux
+export BiOEdgeImageInvalidNormalization
+export BiOEdgeImageMeanValidFlux
+export BiOEdgeImageNonFiniteInput
+export BiOEdgeImageNonFiniteOutput
+export BiOEdgeImageNormalization
+export BiOEdgeImagePlan
+export BiOEdgeImageWorkspace
+export ZernikePupilSignalF32
+export ZernikePupilSignalF32Configuration
+export ZernikePupilSignalCalibrationMismatch
+export ZernikePupilSignalFailure
+export ZernikePupilSignalIncidenceFlux
+export ZernikePupilSignalInvalidNormalization
+export ZernikePupilSignalMeanValidFlux
+export ZernikePupilSignalNonFiniteInput
+export ZernikePupilSignalNonFiniteOutput
+export ZernikePupilSignalNormalization
+export ZernikePupilSignalPlan
+export ZernikePupilSignalWorkspace
+export replace_zernike_pupil_signal_calibration!
+export CurvaturePairedImageF32
+export CurvaturePairedImageF32Configuration
+export CurvaturePairedImagePlan
+export CurvaturePairedChannelF32
+export CurvaturePairedChannelF32Configuration
+export CurvaturePairedChannelPlan
+export CurvaturePairedSignalCalibrationMismatch
+export CurvaturePairedSignalFailure
+export CurvaturePairedSignalNonFiniteInput
+export CurvaturePairedSignalNonFiniteOutput
+export CurvaturePairedSignalWorkspace
+export replace_curvature_signal_calibration!
+export PyramidMeasurementBlockF32
+export PyramidMeasurementBlockF32Configuration
+export PyramidMeasurementBlockWorkspace
+export PyramidPixelImageFailure
+export PyramidPixelImageNonFiniteInput
+export PyramidPixelImageNonFiniteMean
+export PyramidPixelImageNonFiniteNormalizationGain
+export PyramidPixelImageNonFiniteOutput
+export PyramidPixelImagePlan
+export PyramidPupilImageF32
+export PyramidPupilImageF32Configuration
+export PyramidPupilFluxU16F64
+export PyramidPupilFluxU16F64Configuration
+export PyramidPupilReconstructorF32
+export PyramidPupilReconstructorF32Configuration
+export PyramidReconstructorF32
+export PyramidReconstructorF32Configuration
+export PyramidPixelRowF32
+export PyramidPixelRowF32Configuration
+export PyramidPixelRowFailure
+export PyramidPixelRowMetadataMissing
+export PyramidPixelRowNonFiniteInput
+export PyramidPixelRowNonFiniteMean
+export PyramidPixelRowNonFiniteNormalizationGain
+export PyramidPixelRowNonFiniteOutput
+export PyramidPixelRowOffsetOverflow
+export PyramidPixelRowPlan
+export PyramidPixelRowWorkspace
+export PyramidRowReconstructionF32Operation
+export PyramidRowMetadataMissing
+export PyramidRowNonFiniteInput
+export PyramidRowNonFiniteMean
+export PyramidRowNonFiniteNormalizationGain
+export PyramidRowNonFiniteOutput
+export PyramidRowNonFiniteReconstruction
+export PyramidRowOffsetOverflow
+export PyramidRowReconstructionFailure
+export PyramidRowReconstructionPlan
+export PyramidRowReconstructionWorkspace
+export PyramidRowReconstructorF32
+export PyramidRowReconstructorF32Configuration
+export PyramidReadoutMetadataMissing
+export PyramidReadoutNonFiniteInput
+export PyramidReadoutNonFiniteMean
+export PyramidReadoutNonFiniteNormalizationGain
+export PyramidReadoutNonFiniteOutput
+export PyramidReadoutNonFiniteReconstruction
+export PyramidReadoutOffsetOverflow
+export PyramidReadoutReconstructionFailure
+export PyramidReadoutReconstructionPlan
+export PyramidReadoutReconstructionWorkspace
+export PyramidReadoutReconstructorF32
+export PyramidReadoutReconstructorF32Configuration
+export PyramidReadoutMeasurementBlockF32
+export PyramidReadoutMeasurementBlockF32Configuration
+export PyramidReadoutMeasurementBlockPlan
+export PyramidReadoutMeasurementBlockWorkspace
+export PYRAMID_MEAN_PUPIL_INTENSITY_V1
+export PYRAMID_PUPIL_FLUX_ADU_F64_V1
+export PYRAMID_I4Q_SUPPORT_V1
+export PYRAMID_I4Q_RECONSTRUCTOR_V1
+export PYRAMID_I4Q_SIGNAL_V1
+export PYRAMID_NORMALIZATION_DIVISOR_V1
+export PYRAMID_OPTICAL_GAIN_V1
+export PYRAMID_PUPIL_COUNT
+export PYRAMID_PUPIL_MASK_V1
+export PYRAMID_RECONSTRUCTION_PIXELS_V1
+export PYRAMID_REFERENCE_SIGNAL_V1
+export PWFS_RECONSTRUCTOR_V1
+export ReadOnlyProperty
+export RAW_PIXEL_ROW_BLOCK_V1
+export RAW_PIXEL_READOUT_BLOCK_V1
+export RAW_DETECTOR_PIXELS_V1
+export RECONSTRUCTED_MODES_V1
+export PDM_CORRECTION_ROLE_V1
+export REQUESTED_PDM_COMMAND_V1
+export REGION_ORIGINS_V1
+export REGION_PIXELS_V1
+export RegionExtractionF32
+export RegionExtractionF32Configuration
+export RegionExtractionPlan
+export RuntimeProperty
+export RuntimeDeclaredProperties
+export RowMajorLayout
+public AdmittedSampleMetadata
+export SampleMetadata
+export ShackHartmannImageF32Operation
+export ShackHartmannWeightedCentroidF32Operation
+export ShackHartmannRowReconstructionF32Operation
+export SHACK_HARTMANN_ACTIVE_V1
+export SHACK_HARTMANN_COORDINATES_V1
+export SHACK_HARTMANN_FLUX_V1
+export SHACK_HARTMANN_REFERENCE_SLOPES_V1
+export SHACK_HARTMANN_SLOPES_V1
+export SHACK_HARTMANN_SUMMARY_V1
+export SHACK_HARTMANN_THRESHOLDS_V1
+export SHACK_HARTMANN_VALIDITY_V1
+export SHACK_HARTMANN_WEIGHTS_V1
+export SHWFS_RECONSTRUCTOR_V1
+export WEIGHTED_SHACK_HARTMANN_FLUX_V1
+export ShackHartmannImageF32
+export ShackHartmannImageF32Configuration
+export ShackHartmannSummaryF32
+export ShackHartmannSummaryF32Configuration
+export ShackHartmannImagePlan
+export ShackHartmannWeightedCentroidF32
+export ShackHartmannWeightedCentroidF32Configuration
+export ShackHartmannWeightedCentroidPlan
+export ShackHartmannMeasurementBlockF32
+export ShackHartmannMeasurementBlockF32Configuration
+export ShackHartmannMeasurementBlockFailure
+export ShackHartmannMeasurementBlockMetadataMissing
+export ShackHartmannMeasurementBlockOffsetOverflow
+export ShackHartmannMeasurementBlockPlan
+export ShackHartmannMeasurementBlockWorkspace
+export ShackHartmannReadoutMeasurementBlockF32
+export ShackHartmannReadoutMeasurementBlockF32Configuration
+export ShackHartmannReadoutMeasurementBlockFailure
+export ShackHartmannReadoutMeasurementBlockMetadataMissing
+export ShackHartmannReadoutMeasurementBlockOffsetOverflow
+export ShackHartmannReadoutMeasurementBlockPlan
+export ShackHartmannReadoutMeasurementBlockWorkspace
+export ShackHartmannWeightedMeasurementBlockF32
+export ShackHartmannWeightedMeasurementBlockF32Configuration
+export ShackHartmannWeightedMeasurementBlockPlan
+export ShackHartmannReconstructorF32
+export ShackHartmannReconstructorF32Configuration
+export ShackHartmannReadoutMetadataMissing
+export ShackHartmannReadoutNonFiniteReconstruction
+export ShackHartmannReadoutOffsetOverflow
+export ShackHartmannReadoutReconstructionFailure
+export ShackHartmannReadoutReconstructionPlan
+export ShackHartmannReadoutReconstructionWorkspace
+export ShackHartmannReadoutReconstructorF32
+export ShackHartmannReadoutReconstructorF32Configuration
+export ShackHartmannRowMetadataMissing
+export ShackHartmannRowNonFiniteReconstruction
+export ShackHartmannRowOffsetOverflow
+export ShackHartmannRowReconstructionFailure
+export ShackHartmannRowReconstructionPlan
+export ShackHartmannRowReconstructionWorkspace
+export ShackHartmannRowReconstructorF32
+export ShackHartmannRowReconstructorF32Configuration
+export SHAPE_TO_HIDDEN_PROJECTION_V1
+export PixelCalibrationPlan
+export PixelCalibrationReadoutFailure
+export PixelCalibrationReadoutMetadataMissing
+export PixelCalibrationReadoutOrdinalRange
+export PixelCalibrationReadoutTerminalMismatch
+export PixelCalibrationReadoutU16F32
+export PixelCalibrationReadoutU16F32Configuration
+export DetectorReadoutCalibrationPlan
+export DetectorReadoutCalibrationWorkspace
+export PixelCalibrationU16F32
+export PixelCalibrationU16F32Configuration
+export PixelCalibrationRowFailure
+export PixelCalibrationRowMetadataMissing
+export PixelCalibrationRowOffsetMisaligned
+export PixelCalibrationRowOutOfBounds
+export PixelCalibrationRowTerminalMismatch
+export PixelCalibrationRowU16F32
+export PixelCalibrationRowU16F32Configuration
+export PixelCalibrationRowWorkspace
+export PixelValidityF32
+export PixelValidityF32Configuration
+export PixelSelectionF32
+export PixelSelectionF32Configuration
+export PixelSelectionPlan
+export PIXEL_SELECTION_MASK_V1
+export SccReconstructorArtifacts
+export SCC_PUSH_PULL_RESPONSE_V1
+export SCC_CHOPPED_DIFFERENCE_STATUS_V1
+export SCC_CHOPPED_DIFFERENCE_VALIDITY_V1
+export SCC_CHOPPED_IMAGE_DIFFERENCE_V1
+export SCC_RECONSTRUCTOR_V1
+export SCC_REFERENCE_IMAGE_V1
+export SCC_CARRIER_PHASE_V1
+export SCC_INTERACTION_MATRIX_V1
+export SCC_MEASUREMENT_VALIDITY_V1
+export SCC_MEASUREMENT_WEIGHTS_V1
+export SCC_REGULARIZATION_OPERATOR_V1
+export SCC_SELECTED_PIXEL_RESIDUALS_V1
+export SCC_SELECTED_PIXEL_VALIDITY_V1
+export SCC_SELECTED_PIXEL_VALID_FRACTION_V1
+export SCC_SPATIAL_CARRIER_MEASUREMENTS_V1
+export SCC_SPATIAL_CARRIER_VALID_FRACTION_V1
+export SCC_SPATIAL_FIR_V1
+export SccPushPullNonFiniteCalculation
+export SccPushPullNonFinitePullFringed
+export SccPushPullNonFinitePullUnfringed
+export SccPushPullNonFinitePushFringed
+export SccPushPullNonFinitePushUnfringed
+export SccPushPullResponseF32
+export SccPushPullResponseF32Configuration
+export SccPushPullResponseFailure
+export SccPushPullResponsePlan
+export SccPushPullResponseWorkspace
+export SccPixelResidualF32
+export SccPixelResidualF32Configuration
+export SccPixelResidualFailure
+export SccPixelResidualIncompletePair
+export SccPixelResidualInsufficientValidPixels
+export SccPixelResidualInvalidPairStatus
+export SccPixelResidualPlan
+export SccSpatialCarrierDemodulationF32
+export SccSpatialCarrierDemodulationF32Configuration
+export SccSpatialCarrierDemodulationFailure
+export SccSpatialCarrierDemodulationIncompletePair
+export SccSpatialCarrierDemodulationInsufficientSupport
+export SccSpatialCarrierDemodulationInvalidPairStatus
+export SccSpatialCarrierDemodulationPlan
+export SccSpatialCarrierDemodulationWorkspace
+export SccSpatialCarrierDemodulationF32Operation
+export SccReconstructorF32
+export SccReconstructorF32Configuration
+export SccReconstructorCalibration
+export SccReconstructorDiagnostics
+export SccReconstructorPreparationPlan
+export SccReconstructorPreparationWorkspace
+export SccWeightedRegularizedReconstructorF32
+export SccWeightedRegularizedReconstructorF32Configuration
+export SccWeightedRegularizedReconstructionFailure
+export SccWeightedRegularizedReconstructionInvalidMeasurement
+export SccWeightedRegularizedReconstructionInvalidWeight
+export SccWeightedRegularizedReconstructionNotConverged
+export SccWeightedRegularizedReconstructionPlan
+export SccWeightedRegularizedReconstructionSingularSystem
+export SccWeightedRegularizedReconstructionWorkspace
+export SccWeightedRegularizedReconstructionF32Operation
+export SupportsProgress
+export SupportsCapture
+export StructuredInteractionMatrixWorkspace
+export StructuredInteractionMatrixFailure
+export StructuredNonFiniteCalculation
+export StructuredNonFiniteResponse
+export ThinPlateVdmCompletionPlan
+export UnknownPropertyError
+export VdmActuatorPartition
+export VdmActuatorRole
+export VdmCompletionArtifacts
+export VdmCompletionCalibration
+export VdmCompletionDiagnostics
+export VdmCompletionWorkspace
+export VDM_COMMAND_V1
+export VDM_CONSTRAINT_FEEDBACK_V1
+export VDM_TO_PDM_PROJECTION_V1
+export VDM_TO_CONTROLLER_PROJECTION_V1
+export VdmFeedbackToControllerF32
+export VdmFeedbackToControllerF32Configuration
+export VdmFeedbackToControllerFailure
+export VdmFeedbackToControllerNonFiniteInput
+export VdmFeedbackToControllerNonFiniteOutput
+export VdmFeedbackToControllerPlan
+export WEIGHTED_CENTER_OF_GRAVITY_FLUX_V1
+export WeightedCenterOfGravityF32
+export WeightedCenterOfGravityF32Configuration
+export WeightedCenterOfGravityPlan
+export VdmToPdmF32
+export VdmToPdmF32Configuration
+export VdmToPdmFailure
+export VdmToPdmNonFiniteInput
+export VdmToPdmNonFiniteOutput
+export VdmToPdmPlan
+export VdmToPdmWorkspace
+export ZonalInteractionMatrixPlan
+export ZonalInteractionMatrixF32
+export ZonalInteractionMatrixF32Configuration
+export ZonalPushPullF32
+export ZonalPushPullF32Configuration
+export ZonalPushPullPlan
+export active_generation
+export algorithm_configuration
+export algorithm_format
+export algorithm_formats
+export algorithm_label
+export algorithm_operation
+export algorithm_ports
+export algorithm_property_policy
+export algorithms
+export active_plan
+export construction_property
+export controlled_vdm_indices
+export closed_loop_correction_last_output
+export closed_loop_correction_state
+export calibration_probe_amplitudes
+export calibration_probe_corrector_coordinate_count
+export calibration_probe_cycle_length
+export calibration_probe_next_step
+export calibration_probe_pattern_count
+export capture_support
+export chopped_image_is_primed
+export chopped_image_retained_image
+export chopped_image_retained_kind
+export chopped_image_retained_validity
+export docrime_excitation_amplitudes
+export docrime_excitation_seed
+export docrime_excitation_state
+export docrime_corrector_covariance_sum
+export docrime_corrector_sample_mean
+export docrime_covariance_sample_count
+export docrime_measurement_corrector_cross_covariance_sum
+export docrime_measurement_mean
+export extrapolated_vdm_indices
+export fixed_vdm_indices
+export full_vdm_count
+export graph_rebuild_property
+export input_progress
+export leaky_integrator_state
+export frame_delay_head
+export frame_delay_history
+export matched_calibration_is_primed
+export matched_calibration_previous_corrector_sample
+export matched_calibration_previous_measurements
+export optical_gain_reciprocal_corrections
+export optical_gains
+export optical_gain_dither_cosines
+export optical_gain_dither_frame
+export optical_gain_dither_modes
+export optical_gain_dither_phases
+export optical_gain_dither_sines
+export optical_gain_calibration_responses
+export optical_gain_estimator_frame
+export optical_gain_assignment_dither_mode
+export optical_gain_assignment_update_fraction
+export optical_gain_update_assignments
+export optical_gain_update_criteria
+export modal_positive_commands
+export output_progress
+export pdm_command_state
+export prepare_pyramid_pixel_plan
+export prepare_docrime_excitation_plan
+export prepare_algorithm
+public pyramid_geometry_requires_ordered_sum
+export pyramid_normalization_gain
+export pyramid_output_pixel_count
+export pyramid_pupil_mask
+export pyramid_pupil_pixel_count
+export pyramid_row_normalization_gain
+export pyramid_selected_pixel_count
+export property_infos
+export property_schema
+export property_value
+export property_values
+export read_only_property
+export replace_parameter!
+export replace_properties
+export requested_generation
+export requested_plan
+export runtime_property
+export validate_property_schema
+export vdm_actuator_roles
+
+export DETECTOR_FRAME_V1
+export DETECTOR_EM_OUTPUT_ELECTRONS_V1
+export DETECTOR_INPUT_EQUIVALENT_ELECTRONS_V1
+export ATMOSPHERE_OPD_M_V1
+export ACTUATOR_COMMAND_OPD_M_V1
+export TIP_TILT_OPD_COEFFICIENTS_M_V1
+export CONTROLLER_TO_TIP_TILT_V1, TIP_TILT_TO_ACTUATORS_V1
+export DM_SURFACE_OPD_M_V1
+export ACTUATOR_GRID_INDICES_V1
+export NORMALIZED_PUPIL_ACTUATOR_COORDINATES_V1
+export NORMALIZED_PUPIL_XY_V1
+export ANNULAR_PUPIL_SUPPORT_V1
+export INFLUENCE_FUNCTIONS_V1
+export PUPIL_OPD_M_V1
+export PHOTON_RATE_V1
+export FOCAL_PHOTON_RATE_V1
+export RESIDUAL_PUPIL_OPD_NM_V1
+export PUPIL_OPD_RMS_NM_V1
+export APPLIED_PDM_COMMAND_V1, APPLIED_DM_COMMAND_OPD_UM_V1
+
+public schema_element_type
+public schema_channels
+public schema_channel_shape
+public abort!
+public adopt_properties!
+public alias_input
+public algorithm_configuration_type
+public algorithm_failure_type
+public commit!
+public commit_properties!
+public complete!
+public discard!
+public discard_properties!
+public enqueue!
+public finish!
+public finite_output
+public preflight
+public prepare_capture
+public CaptureProtocolError
+public prepare_properties
+public prepare_properties!
+public prepare_validation
+public preserves_inputs
+public process!
+public reclaim_retired_properties!
+public recover!
+public reset!
+public splitmix64_advance
+public splitmix64_at
+public splitmix64_unit_at
+public start!
+
+export @algorithm
+
+export PixelCalibrationF32, PixelCalibrationF32Configuration, PixelCalibrationFailure
+export PixelCalibrationNonFiniteInput, PixelCalibrationNonFiniteOutput, PixelCalibrationWorkspace
+
+end

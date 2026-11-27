@@ -1,0 +1,51 @@
+# Generated snapshot receipts; canonical sources are listed below.
+# Regenerate selected copies and hashes with julia test/update_snapshots.jl <source>...
+format_version = 1
+
+[[snapshot]]
+source = "test/data/algorithms/closed_loop_correction.toml"
+path = "algorithms/closed_loop_correction.toml"
+sha256 = "daffbcbc8ab63f9fa037a76fdd7b4ae84931495edc6077c8cc4c356acf76e3c5"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_pixel_row.toml"
+path = "algorithms/pyramid_pixel_row.toml"
+sha256 = "970f40dd565b15b51515eca9584ab1f93cd01576f81bfdb546c6249725c2d6be"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "julia/FilterGraphs/test/data/pixel-calibration-row.conf"
+path = "pixel-calibration-row.conf"
+sha256 = "32e34f2030c96ea9f3eae9bf986b3d58a092e485fed354a72306f00cfa355718"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "julia/FilterGraphs/test/data/closed-loop-correction.conf"
+path = "closed-loop-correction.conf"
+sha256 = "2a0cf8b9a3a975f35d21157a4c3edbf9951886720591aa5af85afbf2c13f99fb"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "julia/FilterGraphs/test/data/pixel-pyramid-row.conf"
+path = "pixel-pyramid-row.conf"
+sha256 = "d218aeeb6c2c083c7264fdb1ce20670841bcb9bf9714c329dd3c3b578da6a965"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/cred2-fits-replay/run.jl"
+path = "examples/cred2-fits-replay/run.jl"
+sha256 = "4bb12ee23765dda64c9924d2660c9448a1d53cc05ed6206a822ad5465ae8afd1"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/cred2-fits-replay/graph.conf"
+path = "examples/cred2-fits-replay/graph.conf"
+sha256 = "c27c493abcf9054e3427c3681b8214f643afbd6155c53d02817f4816139ff336"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "julia/FilterGraphs/test/composition_fixture.jl"
+path = "support/composition_fixture.jl"
+sha256 = "1875bc25eadc9685908105d9e21c3cd988f28d9dab556be7e7d99f75fb76998d"
+generated_header_lines = 2

@@ -1,0 +1,31 @@
+# Generated snapshot from test/data/algorithms/bi_o_edge_image_synthetic.toml.
+# Regenerate with julia test/update_snapshots.jl test/data/algorithms/bi_o_edge_image_synthetic.toml.
+# Synthetic 2 × 2 pupils in a 4 × 4 detector. Arrays are column-major.
+# Over supported coordinates, X = q1 + q4 - q2 - q3 and Y = q1 + q2 - q3 - q4.
+# The mean divisor is the average four-pupil sum. Signal = gain * (difference / divisor - reference).
+
+[geometry]
+image_size = [4, 4]
+pupil_size = [2, 2]
+pupil_origins = [[0, 0], [2, 0], [2, 2], [0, 2]]
+support = [true, false, true, true]
+
+[calibration]
+reference_signal = [0.125, -0.125, 0.0625, 0.125, -0.0625, 0.125]
+optical_gain = [1.5, 0.5, 2.0, 0.25, 1.25, 0.75]
+signature = 37
+
+[frame]
+image = [4, 25, 7, 2, 15, 8, 4, 5, 7, 14, 2, 5, 2, 18, 11, 13]
+
+[mean_valid_flux]
+normalization_policy = "mean-valid-flux"
+normalization_divisor = 32.0
+signal = [-0.09375, 0.09375, 0.375, -0.015625, 0.3125, -0.515625]
+raw_x = [2, 2, 8]
+raw_y = [2, 6, -18]
+
+[incidence_flux]
+normalization_policy = "incidence-flux"
+normalization_divisor = 16.0
+signal = [0.0, 0.125, 0.875, 0.0, 0.546875, -0.9375]

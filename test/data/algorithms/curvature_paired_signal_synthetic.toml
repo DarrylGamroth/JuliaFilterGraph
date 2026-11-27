@@ -1,0 +1,29 @@
+# Synthetic 2 × 2 tile sums in two overlapping 4 × 6 branch windows.
+# The same sums appear in permuted channels with an unused third row.
+# Apply each branch scale then compute (positive - negative) / (total + eps(Float32)) - reference.
+# Masked positions return zero.
+
+[geometry]
+image_size = [6, 8]
+signal_size = [2, 3]
+branch_size = [4, 6]
+positive_branch_origin = [0, 1]
+negative_branch_origin = [2, 1]
+positive_branch_row = 0
+negative_branch_row = 1
+channel_offsets = [4, 1, 5, 3, 0, 2]
+support = [true, true, false, true, true, false]
+
+[calibration]
+signature = 59
+branch_scales = [2.0, 0.5]
+reference_signal = [0.125, -0.125, 0.375, 0.125, -0.125, -0.25]
+
+[frame]
+image = [7, 7, 7, 7, 7, 7, 1, 1, 9, 1, 13, 1, 1, 1, 1, 1, 1, 1, 3, 1, 5, 1, 13, 1, 1, 1, 1, 1, 1, 1, 7, 1, 21, 1, 5, 1, 1, 1, 1, 1, 1, 1, 7, 7, 7, 7, 7, 7]
+positive_reduced = [4, 12, 6, 8, 10, 24]
+negative_reduced = [12, 16, 8, 16, 24, 8]
+channels = [10, 24, -10, 12, 16, -11, 24, 8, -12, 8, 16, -13, 4, 12, -14, 6, 8, -15]
+
+[expected]
+signal = [0.017857141640721545, 0.6249999981373549, 0.0, 0.20833333167764875, 0.3749999990686774, 0.0]

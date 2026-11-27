@@ -1,0 +1,34 @@
+# Frozen from the external Rust FGN DocrimeCovarianceF32 tests at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94. Matrices are serialized in
+# documented row-major logical order.
+
+schema = "test.julia-filter-graph/docrime-covariance/1"
+measurement_count = 2
+corrector_sample_count = 2
+
+[[frames]]
+measurements = [10.0, 4.5]
+corrector_sample = [1.0, 2.0]
+measurement_mean = [10.0, 4.5]
+corrector_sample_mean = [1.0, 2.0]
+cross_covariance_sum = [0.0, 0.0, 0.0, 0.0]
+corrector_covariance_sum = [0.0, 0.0, 0.0, 0.0]
+sample_count = 1
+
+[[frames]]
+measurements = [16.0, -0.5]
+corrector_sample = [3.0, 0.0]
+measurement_mean = [13.0, 2.0]
+corrector_sample_mean = [2.0, 1.0]
+cross_covariance_sum = [6.0, -6.0, -5.0, 5.0]
+corrector_covariance_sum = [2.0, -2.0, -2.0, 2.0]
+sample_count = 2
+
+[[frames]]
+measurements = [16.0, 12.5]
+corrector_sample = [5.0, 4.0]
+measurement_mean = [14.0, 5.5]
+corrector_sample_mean = [3.0, 2.0]
+cross_covariance_sum = [12.0, 0.0, 16.0, 26.0]
+corrector_covariance_sum = [8.0, 4.0, 4.0, 8.0]
+sample_count = 3

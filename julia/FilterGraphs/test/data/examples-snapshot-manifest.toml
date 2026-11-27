@@ -1,0 +1,141 @@
+# Generated snapshot receipts; canonical sources are listed below.
+# Regenerate selected copies and hashes with julia test/update_snapshots.jl <source>...
+format_version = 1
+
+[[snapshot]]
+source = "examples/docrime-excitation/graph.conf"
+path = "examples/docrime-excitation/graph.conf"
+sha256 = "f35e4f75aa5d6042403bcaa341b28465531441cb73e6fac4a9518c26f06b9342"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/leaky-controller/graph.conf"
+path = "examples/leaky-controller/graph.conf"
+sha256 = "48d32c1a28c80e774902d6720448e18fa79a7547eab082b86dee7ddeb47b07f8"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/optical-gain-workflow/graph.conf"
+path = "examples/optical-gain-workflow/graph.conf"
+sha256 = "f49b7ec4e51c2a49595a360cbe9f7cfaf27501c633fbb1d8266a66680c134554"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/pixel-pyramid-row/graph.conf"
+path = "examples/pixel-pyramid-row/graph.conf"
+sha256 = "7f225b955401a4b9b62bf10faac652500d558dc99fe57ada8d23172972d3b15e"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/pyramid/progressive.conf"
+path = "examples/pyramid/progressive.conf"
+sha256 = "61973dcf818922f5ddb45d8a06b86433246882a9e35ee257c4bada57b6fc5196"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/pyramid/scao.conf"
+path = "examples/pyramid/scao.conf"
+sha256 = "a3fa28abc94ebd9260eb97eddf50518f9caacca39c18ee6487c3c8ad31218e45"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/scc-spatial-weighted-controller/graph.conf"
+path = "examples/scc-spatial-weighted-controller/graph.conf"
+sha256 = "47806b2c1ca5a9111be40fe085b0737f178ebc262bd57eff910143d24a6bc414"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/shack-hartmann/progressive.conf"
+path = "examples/shack-hartmann/progressive.conf"
+sha256 = "1da0ddcf099d581baa7bbc44afc85091da12935566b55dca1baae6b5a1487961"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/shack-hartmann/scao.conf"
+path = "examples/shack-hartmann/scao.conf"
+sha256 = "bbc4af7be2fe970045aeb7de83168e33eff0fc5adf582a5bd0d3879fe353a2c2"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/ml-llowfs/graph.conf"
+path = "examples/ml-llowfs/graph.conf"
+sha256 = "3babb59b211908e2ca03449690aca53222924272b84a2f75c301a986d9fd7277"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/docrime-excitation/run.jl"
+path = "examples/docrime-excitation/run.jl"
+sha256 = "e5f890a16d300e0c9e1b7d20d86cbcd11c6464bdfce6fab47b067815d427030a"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/leaky-controller/run.jl"
+path = "examples/leaky-controller/run.jl"
+sha256 = "11ed38f935576d9a170a9032fc5f5e5141ebf7eb6fc904e5f35ce772c46f3174"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/optical-gain-workflow/run.jl"
+path = "examples/optical-gain-workflow/run.jl"
+sha256 = "ec69b0c5e61b3f21218418dae51e923500dd6691ae9608ec5a697f88926ee79f"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/pixel-pyramid-row/run.jl"
+path = "examples/pixel-pyramid-row/run.jl"
+sha256 = "08ee86e6b1c500767711ba594ee1de4a601d9bf04150e1c93326556dbc143329"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/modal-biquad-controller/run.jl"
+path = "examples/modal-biquad-controller/run.jl"
+sha256 = "2d331db5c8f0b365f8eb0fd008074ba03850ed5f4d9f521bdc79fc547cab2b64"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/cred2-fits-replay/run.jl"
+path = "examples/cred2-fits-replay/run.jl"
+sha256 = "4bb12ee23765dda64c9924d2660c9448a1d53cc05ed6206a822ad5465ae8afd1"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/modal-command-allocation/run.jl"
+path = "examples/modal-command-allocation/run.jl"
+sha256 = "075834b454846b24a879fc3aded4759f9d6faefd6050a5b7d0569ef4e8aeff3c"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/corrector-stages/run.jl"
+path = "examples/corrector-stages/run.jl"
+sha256 = "6f8e10e897336f4dc2187bed451b5ccfccb8d966647ca2e1bdc57ad93dcba8e9"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/pyramid/readout.conf"
+path = "examples/pyramid/readout.conf"
+sha256 = "9a11dd6a43069de9089d4518c9534aac40c2176b1190b891eb942e3490ee0255"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/shack-hartmann/readout.conf"
+path = "examples/shack-hartmann/readout.conf"
+sha256 = "1af5b3ecfb6b2708b97acf03fb24c3fb70a9d87db70e6ca82ce444428d40e737"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/modal-biquad-controller/graph.conf"
+path = "examples/modal-biquad-controller/graph.conf"
+sha256 = "565fc694f3263d381aae6b7a42bf573f132cdd8e7b4867c118311d1777abccaa"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/cred2-fits-replay/graph.conf"
+path = "examples/cred2-fits-replay/graph.conf"
+sha256 = "c27c493abcf9054e3427c3681b8214f643afbd6155c53d02817f4816139ff336"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "examples/stateful-algorithm/run.jl"
+path = "examples/stateful-algorithm/run.jl"
+sha256 = "3ac3c8227ba0b1a7b8ebab7191a067acc835cdf85449a1446d7318f95b1db14a"
+generated_header_lines = 2

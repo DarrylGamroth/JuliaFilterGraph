@@ -1,0 +1,36 @@
+# Frozen from the external Rust FGN MatchedCalibrationDifferencingF32 tests at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94. Expected Float32 bit patterns
+# encode the exact first-pair priming and subsequent `[1, -1]` differences.
+
+measurement_count = 2
+corrector_sample_count = 2
+
+[[frames]]
+name = "priming"
+measurements = [10.0, 20.0]
+corrector_sample = [1.0, -2.0]
+filtered_measurements = [0.0, 0.0]
+filtered_measurement_bits = [0, 0]
+filtered_corrector_sample = [0.0, 0.0]
+filtered_corrector_sample_bits = [0, 0]
+filtered = false
+
+[[frames]]
+name = "first-difference"
+measurements = [13.0, 14.0]
+corrector_sample = [0.5, 4.0]
+filtered_measurements = [3.0, -6.0]
+filtered_measurement_bits = [1077936128, 3233808384]
+filtered_corrector_sample = [-0.5, 6.0]
+filtered_corrector_sample_bits = [3204448256, 1086324736]
+filtered = true
+
+[[frames]]
+name = "zero-difference"
+measurements = [13.0, 14.0]
+corrector_sample = [0.5, 4.0]
+filtered_measurements = [0.0, 0.0]
+filtered_measurement_bits = [0, 0]
+filtered_corrector_sample = [0.0, 0.0]
+filtered_corrector_sample_bits = [0, 0]
+filtered = true

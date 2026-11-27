@@ -1,0 +1,1203 @@
+# This file is the authoritative catalog of public scientific ndarray schemas.
+# Run `julia scripts/generate_schemas.jl` after changing it.
+
+catalog_version = 1
+compatibility = "Schema identifiers are opaque. Ports are compatible only when their complete identifiers and structural ndarray formats match exactly."
+
+[[schemas]]
+constant = "BIQUAD_COEFFICIENTS_V1"
+name = "biquad-coefficients"
+element_type = "Float32"
+version = 1
+definition = "F32 dimensionless normalized temporal biquad coefficients in (coefficient, section, coefficient-set) order. Coefficient order is (b0, b1, b2, a1, a2), with a0 = 1 and denominator 1 + a1*z^-1 + a2*z^-2. Sections execute in ascending order. A single coefficient set is shared across modes; otherwise sets follow input-mode order. Every coefficient is finite and each section has poles strictly inside the unit circle."
+
+[[schemas]]
+constant = "CONTROLLER_RESIDUAL_ERROR_V1"
+name = "controller-residual-error"
+element_type = "Float32"
+version = 1
+definition = "F32 reconstructed residual error in controller-coordinate order."
+
+[[schemas]]
+constant = "PSEUDO_OPEN_LOOP_INTERACTION_MATRIX_V1"
+name = "pseudo-open-loop-interaction-matrix"
+element_type = "Float32"
+version = 1
+definition = "F32 corrector-to-measurement map for pseudo-open-loop reconstruction."
+
+[[schemas]]
+constant = "PSEUDO_OPEN_LOOP_RECONSTRUCTOR_V1"
+name = "pseudo-open-loop-reconstructor"
+element_type = "Float32"
+version = 1
+definition = "F32 measurement-to-residual-error pseudo-open-loop reconstructor."
+
+[[schemas]]
+constant = "PSEUDO_OPEN_LOOP_CORRECTOR_TO_ERROR_V1"
+name = "pseudo-open-loop-corrector-to-error"
+element_type = "Float32"
+version = 1
+definition = "F32 corrector-to-residual-error map for pseudo-open-loop reconstruction."
+
+[[schemas]]
+constant = "CONTROLLER_COMMAND_V1"
+name = "controller-command"
+element_type = "Float32"
+version = 1
+definition = "F32 correction command in controller-coordinate order."
+
+[[schemas]]
+constant = "CONTROLLER_STATE_V1"
+name = "controller-state"
+element_type = "Float32"
+version = 1
+definition = "F32 committed closed-loop state in controller-coordinate order."
+
+[[schemas]]
+constant = "CONTROLLER_CONSTRAINT_FEEDBACK_V1"
+name = "controller-constraint-feedback"
+element_type = "Float32"
+version = 1
+definition = "F32 constraint feedback in concatenated controller-coordinate order."
+
+[[schemas]]
+constant = "VDM_COMMAND_V1"
+name = "vdm-command"
+element_type = "Float32"
+version = 1
+definition = "F32 commands in active virtual-deformable-mirror coordinate order."
+
+[[schemas]]
+constant = "CONTROLLER_TO_VDM_PROJECTION_V1"
+name = "controller-to-vdm-projection"
+element_type = "Float32"
+version = 1
+definition = "F32 controller-command to active-VDM projection."
+
+[[schemas]]
+constant = "VDM_TO_CONTROLLER_PROJECTION_V1"
+name = "vdm-to-controller-projection"
+element_type = "Float32"
+version = 1
+definition = "F32 active-VDM to controller-coordinate feedback projection."
+
+[[schemas]]
+constant = "REQUESTED_PDM_COMMAND_V1"
+name = "requested-pdm-command"
+element_type = "Float32"
+version = 1
+definition = "F32 requested command in concatenated physical-actuator order."
+
+[[schemas]]
+constant = "PDM_SYSTEM_FLAT_V1"
+name = "pdm-system-flat"
+element_type = "Float32"
+version = 1
+definition = "F32 physical-DM system flat in concatenated actuator order."
+
+[[schemas]]
+constant = "PDM_ENGINEERING_OFFSET_V1"
+name = "dm-offset-opd-um"
+element_type = "Float32"
+version = 1
+definition = "F32 physical-DM engineering offset in concatenated actuator order, in µm wavefront."
+
+[[schemas]]
+constant = "INTER_ACTUATOR_STROKE_LIMIT_V1"
+name = "inter-actuator-stroke-limit"
+element_type = "Float32"
+version = 1
+definition = "F32 maximum differences for the configured physical-actuator edges."
+
+[[schemas]]
+constant = "PREFERRED_PDM_COMMAND_V1"
+name = "preferred-pdm-command"
+element_type = "Float32"
+version = 1
+definition = "F32 preferred physical-DM command in actuator order."
+
+[[schemas]]
+constant = "PDM_COMMAND_TO_NULL_MODES_V1"
+name = "pdm-command-to-null-modes"
+element_type = "Float32"
+version = 1
+definition = "F32 map from physical-DM commands to calibrated null modes."
+
+[[schemas]]
+constant = "PDM_NULL_MODES_TO_COMMAND_V1"
+name = "pdm-null-modes-to-command"
+element_type = "Float32"
+version = 1
+definition = "F32 map from calibrated null modes to physical-DM commands."
+
+[[schemas]]
+constant = "DEMANDED_PDM_COMMAND_V1"
+name = "dm-command-opd-um"
+element_type = "Float32"
+version = 1
+definition = "F32 commanded physical-DM values in concatenated actuator order, in µm wavefront optical path difference."
+
+[[schemas]]
+constant = "NATIVE_PDM_COMMAND_V1"
+name = "demanded-pdm-command"
+element_type = "Float32"
+version = 1
+definition = "F32 native device command values in physical-actuator order. The values have no displacement unit."
+
+[[schemas]]
+constant = "PDM_CONSTRAINT_FEEDBACK_V1"
+name = "pdm-constraint-feedback"
+element_type = "Float32"
+version = 1
+definition = "F32 requested-minus-commanded PDM feedback in actuator order."
+
+[[schemas]]
+constant = "VDM_CONSTRAINT_FEEDBACK_V1"
+name = "vdm-constraint-feedback"
+element_type = "Float32"
+version = 1
+definition = "F32 constraint feedback in active VDM coordinate order."
+
+[[schemas]]
+constant = "ACTIVE_TO_FULL_VDM_PROJECTION_V1"
+name = "active-to-full-vdm-projection"
+element_type = "Float32"
+version = 1
+definition = "F32 active-to-full VDM projection."
+
+[[schemas]]
+constant = "FULL_TO_ACTIVE_VDM_PROJECTION_V1"
+name = "full-to-active-vdm-projection"
+element_type = "Float32"
+version = 1
+definition = "F32 full-to-active VDM projection."
+
+[[schemas]]
+constant = "VDM_TO_PDM_PROJECTION_V1"
+name = "vdm-to-pdm-projection"
+element_type = "Float32"
+version = 1
+definition = "F32 full-VDM-to-physical-actuator projection."
+
+[[schemas]]
+constant = "PDM_TO_VDM_PROJECTION_V1"
+name = "pdm-to-vdm-projection"
+element_type = "Float32"
+version = 1
+definition = "F32 physical-actuator to full-VDM feedback projection."
+
+[[schemas]]
+constant = "SHAPE_TO_HIDDEN_PROJECTION_V1"
+name = "shape-to-hidden-projection"
+element_type = "Float32"
+version = 1
+definition = "F32 controller-state to hidden-mode projection."
+
+[[schemas]]
+constant = "HIDDEN_TO_SHAPE_PROJECTION_V1"
+name = "hidden-to-shape-projection"
+element_type = "Float32"
+version = 1
+definition = "F32 hidden-mode to controller-state projection."
+
+[[schemas]]
+constant = "DOCRIME_EXCITATION_V1"
+name = "docrime-excitation"
+element_type = "Float32"
+version = 1
+definition = "F32 deterministic corrector excitation in corrector-coordinate order."
+
+[[schemas]]
+constant = "DOCRIME_EXCITATION_AMPLITUDE_V1"
+name = "docrime-excitation-amplitude"
+element_type = "Float32"
+version = 1
+definition = "F32 positive DO-CRIME amplitude in corrector-coordinate order."
+
+[[schemas]]
+constant = "DOCRIME_COVARIANCE_SAMPLE_COUNT_V1"
+name = "docrime-covariance-sample-count"
+element_type = "UInt64"
+version = 1
+definition = "U64 number of samples committed into published DO-CRIME covariance sums."
+
+[[schemas]]
+constant = "DOCRIME_COVARIANCE_COMPLETE_V1"
+name = "docrime-covariance-complete"
+element_type = "Bool"
+version = 1
+definition = "Boolean marker for a completed finite DO-CRIME covariance window."
+
+[[schemas]]
+constant = "DOCRIME_INTERACTION_MATRIX_STATUS_V1"
+name = "docrime-interaction-matrix-status"
+element_type = "UInt8"
+version = 1
+definition = "U8 classification of one DO-CRIME interaction-matrix solve."
+
+[[schemas]]
+constant = "DOCRIME_INTERACTION_MATRIX_STATUS_COORDINATES_V1"
+name = "docrime-interaction-matrix-status-coordinates"
+element_type = "UInt64"
+version = 1
+definition = "Zero-based U64 corrector-coordinate pair associated with a DO-CRIME status."
+
+[[schemas]]
+constant = "DOCRIME_CORRECTOR_VARIANCE_RANGE_V1"
+name = "docrime-corrector-variance-range"
+element_type = "Float32"
+version = 1
+definition = "F32 minimum and maximum corrector sample variances."
+
+[[schemas]]
+constant = "DOCRIME_MAXIMUM_ABSOLUTE_CORRECTOR_CORRELATION_V1"
+name = "docrime-maximum-absolute-corrector-correlation"
+element_type = "Float32"
+version = 1
+definition = "F32 maximum absolute off-diagonal corrector correlation."
+
+[[schemas]]
+constant = "DOCRIME_MINIMUM_FACTORIZATION_PIVOT_RATIO_V1"
+name = "docrime-minimum-factorization-pivot-ratio"
+element_type = "Float32"
+version = 1
+definition = "F32 minimum Cholesky factorization pivot ratio."
+
+[[schemas]]
+constant = "INTERACTION_MATRIX_STABILITY_STATUS_V1"
+name = "interaction-matrix-stability-status"
+element_type = "UInt8"
+version = 1
+definition = "U8 interaction-matrix stability classification: valid `0`, insufficient column norm `1`, excessive relative column difference `2`, or excessive relative Frobenius difference `3`."
+
+[[schemas]]
+constant = "CORRECTOR_COORDINATE_V1"
+name = "corrector-coordinate"
+element_type = "UInt64"
+version = 1
+definition = "Zero-based U64 corrector coordinate. A status coordinate is zero when the classification does not identify one coordinate."
+
+[[schemas]]
+constant = "INTERACTION_MATRIX_STABILITY_COLUMN_NORMS_V1"
+name = "interaction-matrix-stability-column-norms"
+element_type = "Float32"
+version = 1
+definition = "F32 minimum column norms in first-window, second-window order."
+
+[[schemas]]
+constant = "INTERACTION_MATRIX_STABILITY_RELATIVE_COLUMN_V1"
+name = "interaction-matrix-stability-relative-column-difference"
+element_type = "Float32"
+version = 1
+definition = "F32 maximum symmetric relative interaction-matrix column difference."
+
+[[schemas]]
+constant = "INTERACTION_MATRIX_STABILITY_RELATIVE_FROBENIUS_V1"
+name = "interaction-matrix-stability-relative-frobenius-difference"
+element_type = "Float32"
+version = 1
+definition = "F32 symmetric relative interaction-matrix Frobenius difference."
+
+[[schemas]]
+constant = "MATCHED_CALIBRATION_FILTERED_V1"
+name = "matched-calibration-filtered"
+element_type = "Bool"
+version = 1
+definition = "Boolean validity of matched first-difference outputs. `false` identifies the zero-valued priming output; `true` identifies two valid differenced vectors."
+
+[[schemas]]
+constant = "CALIBRATION_PATTERN_INDEX_V1"
+name = "calibration-pattern-index"
+element_type = "UInt64"
+version = 1
+definition = "Zero-based U64 structured calibration pattern coordinate."
+
+[[schemas]]
+constant = "CALIBRATION_PROBE_POLARITY_V1"
+name = "calibration-probe-polarity"
+element_type = "UInt8"
+version = 1
+definition = "U8 structured calibration polarity: positive `0` or negative `1`."
+
+[[schemas]]
+constant = "CALIBRATION_CYCLE_COMPLETE_V1"
+name = "calibration-cycle-complete"
+element_type = "Bool"
+version = 1
+definition = "Boolean marker for the final negative command in one probe cycle."
+
+[[schemas]]
+constant = "CALIBRATION_PROBE_AMPLITUDES_V1"
+name = "calibration-probe-amplitudes"
+element_type = "Float32"
+version = 1
+definition = "F32 positive structured-probe amplitudes in corrector-coordinate order."
+
+[[schemas]]
+constant = "MODAL_POSITIVE_COMMANDS_V1"
+name = "modal-positive-commands"
+element_type = "Float32"
+version = 1
+definition = "F32 modal positive commands in mode-by-corrector order."
+
+[[schemas]]
+constant = "RAW_PIXEL_ROW_BLOCK_V1"
+name = "raw-pixel-row-block"
+element_type = "UInt16"
+version = 1
+definition = "U16 detector ADU values for one contiguous row block. SampleMetadata.offset is the zero-based first detector row; axis 1 advances through contiguous detector rows and axis 2 through detector columns. Published blocks are complete and immutable."
+
+[[schemas]]
+constant = "RAW_DETECTOR_PIXELS_V1"
+name = "raw-detector-pixels"
+element_type = "UInt16"
+version = 1
+frame_encoding = "uint16"
+definition = "Complete detector-plane U16 ADU values in detector (row, column) axis order."
+
+[[schemas]]
+constant = "RAW_PIXEL_READOUT_BLOCK_V1"
+name = "raw-pixel-readout-block"
+element_type = "UInt16"
+version = 1
+definition = "U16 detector ADU values for one acquisition-ordered readout block. SampleMetadata.offset is the zero-based block ordinal; the prepared detector-readout mapping defines each value's detector coordinate. Published blocks are complete and immutable."
+
+[[schemas]]
+constant = "CALIBRATED_PIXEL_ROW_BLOCK_V1"
+name = "calibrated-pixel-row-block"
+element_type = "Float32"
+version = 1
+definition = "Calibrated F32 PDE values for one contiguous detector-row block. SampleMetadata.offset is the zero-based first detector row; axis 1 advances through contiguous detector rows and axis 2 through detector columns. Published blocks are complete and immutable."
+
+[[schemas]]
+constant = "CALIBRATED_PIXELS_V1"
+name = "calibrated-pixels"
+element_type = "Float32"
+version = 1
+definition = "Complete detector-plane calibrated F32 PDE values in detector (row, column) axis order. Values are flat * (F32(raw) - background)."
+
+[[schemas]]
+constant = "RECONSTRUCTED_MODES_V1"
+name = "reconstructed-modes"
+element_type = "Float32"
+version = 1
+definition = "F32 reconstructed modal coefficients in controller mode order."
+
+[[schemas]]
+constant = "LLOWFS_MODES_V1"
+name = "llowfs-modes"
+element_type = "Float32"
+version = 1
+definition = "F32 LLOWFS modal coefficients in the calibrated shared LLOWFS mode order consumed by the modes-to-controlled-VDM projection."
+
+[[schemas]]
+constant = "ML_LLOWFS_PARAMETERS_V1"
+name = "ml-llowfs-parameters"
+element_type = "Float32"
+version = 1
+definition = "Finite F32 parameters in the legacy LLOWFS model order, for downstream compatibility. This is a sparse prepared artifact rather than a per-frame input."
+
+[[schemas]]
+constant = "PHYSICAL_OPTICAL_GAIN_V1"
+name = "physical-optical-gain"
+element_type = "Float32"
+version = 1
+definition = "F32 physical wavefront-sensor response ratios in controller mode order."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_DITHER_COMMAND_V1"
+name = "optical-gain-dither-command"
+element_type = "Float32"
+version = 1
+definition = "F32 commanded optical-gain dither values in prepared mode order."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_DITHER_WINDOW_FRAME_V1"
+name = "optical-gain-dither-window-frame"
+element_type = "UInt64"
+version = 1
+definition = "U64 zero-based frame within the current optical-gain estimate window."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_DITHER_PHASE_INDICES_V1"
+name = "optical-gain-dither-phase-indices"
+element_type = "UInt64"
+version = 1
+definition = "U64 zero-based sinusoid phase per prepared optical-gain dither mode."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_DITHER_WINDOW_COMPLETE_V1"
+name = "optical-gain-dither-window-complete"
+element_type = "Bool"
+version = 1
+definition = "BOOL flag identifying the final frame in one optical-gain estimate window."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_DITHER_RESPONSE_V1"
+name = "optical-gain-dither-response"
+element_type = "Float32"
+version = 1
+definition = "F32 raw reconstructed response in prepared optical-gain dither-mode order."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_CALIBRATION_RESPONSE_V1"
+name = "optical-gain-calibration-response"
+element_type = "Float32"
+version = 1
+definition = "F32 calibration response per optical-gain dither mode."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_COMMAND_AMPLITUDE_V1"
+name = "optical-gain-command-amplitude"
+element_type = "Float32"
+version = 1
+definition = "F32 demodulated realized-command amplitude per dither mode."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_RESPONSE_AMPLITUDE_V1"
+name = "optical-gain-response-amplitude"
+element_type = "Float32"
+version = 1
+definition = "F32 demodulated reconstructed-response amplitude per dither mode."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_DITHER_ESTIMATE_V1"
+name = "optical-gain-dither-estimate"
+element_type = "Float32"
+version = 1
+definition = "F32 physical optical-gain estimate in prepared dither-mode order."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_PHASE_LAG_V1"
+name = "optical-gain-phase-lag"
+element_type = "Float32"
+version = 1
+definition = "F32 response-minus-command phase lag in radians per dither mode."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_ESTIMATE_VALIDITY_V1"
+name = "optical-gain-estimate-validity"
+element_type = "Bool"
+version = 1
+definition = "BOOL validity of each optical-gain dither-mode estimate."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_ESTIMATE_COMPLETE_V1"
+name = "optical-gain-estimate-complete"
+element_type = "Bool"
+version = 1
+definition = "BOOL flag identifying publication of one complete optical-gain estimate."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_ACCEPTED_DITHER_MODES_V1"
+name = "optical-gain-accepted-dither-modes"
+element_type = "Bool"
+version = 1
+definition = "BOOL acceptance status in prepared optical-gain dither-mode order."
+
+[[schemas]]
+constant = "OPTICAL_GAIN_UPDATED_RECONSTRUCTED_MODES_V1"
+name = "optical-gain-updated-reconstructed-modes"
+element_type = "Bool"
+version = 1
+definition = "BOOL update status in reconstructed controller-mode order."
+
+[[schemas]]
+constant = "CALIBRATED_PIXEL_VALIDITY_V1"
+name = "calibrated-pixel-validity"
+element_type = "Bool"
+version = 1
+definition = "BOOL validity for complete calibrated detector pixels."
+
+[[schemas]]
+constant = "SCC_PUSH_PULL_RESPONSE_V1"
+name = "scc-push-pull-response"
+element_type = "Float32"
+version = 1
+definition = "F32 Thompson four-image SCC calibration response."
+
+[[schemas]]
+constant = "SCC_CHOPPED_IMAGE_DIFFERENCE_V1"
+name = "scc-chopped-image-difference"
+element_type = "Float32"
+version = 1
+definition = "F32 rolling fringed-minus-unfringed SCC chopped-image difference."
+
+[[schemas]]
+constant = "SCC_CHOPPED_DIFFERENCE_VALIDITY_V1"
+name = "scc-chopped-difference-validity"
+element_type = "Bool"
+version = 1
+definition = "BOOL per-pixel validity of the rolling SCC chopped-image difference."
+
+[[schemas]]
+constant = "SCC_CHOPPED_DIFFERENCE_STATUS_V1"
+name = "scc-chopped-difference-status"
+element_type = "UInt8"
+version = 1
+definition = "U8 chopped-image pair status: priming `0` or complete `1`."
+
+[[schemas]]
+constant = "SCC_REFERENCE_IMAGE_V1"
+name = "scc-reference-image"
+element_type = "Float32"
+version = 1
+definition = "F32 reference SCC chopped-image difference in complete detector-pixel order."
+
+[[schemas]]
+constant = "SCC_SELECTED_PIXEL_RESIDUALS_V1"
+name = "scc-selected-pixel-residuals"
+element_type = "Float32"
+version = 1
+definition = "F32 reference-subtracted SCC residuals in prepared dark-hole pixel order."
+
+[[schemas]]
+constant = "SCC_SELECTED_PIXEL_VALIDITY_V1"
+name = "scc-selected-pixel-validity"
+element_type = "Bool"
+version = 1
+definition = "BOOL validity in prepared SCC dark-hole pixel order."
+
+[[schemas]]
+constant = "SCC_SELECTED_PIXEL_VALID_FRACTION_V1"
+name = "scc-selected-pixel-valid-fraction"
+element_type = "Float32"
+version = 1
+definition = "F32 fraction of prepared SCC dark-hole pixels valid in the current chopped pair."
+
+[[schemas]]
+constant = "SCC_SPATIAL_CARRIER_MEASUREMENTS_V1"
+name = "scc-spatial-carrier-measurements"
+element_type = "Float32"
+version = 1
+definition = "F32 mask-aware SCC spatial-carrier measurements with all selected real components followed by all selected imaginary components."
+
+[[schemas]]
+constant = "SCC_MEASUREMENT_WEIGHTS_V1"
+name = "scc-measurement-weights"
+element_type = "Float32"
+version = 1
+definition = "Finite nonnegative F32 confidence weights aligned with an SCC measurement vector."
+
+[[schemas]]
+constant = "SCC_MEASUREMENT_VALIDITY_V1"
+name = "scc-measurement-validity"
+element_type = "Bool"
+version = 1
+definition = "BOOL validity aligned with an SCC measurement vector."
+
+[[schemas]]
+constant = "SCC_SPATIAL_CARRIER_VALID_FRACTION_V1"
+name = "scc-spatial-carrier-valid-fraction"
+element_type = "Float32"
+version = 1
+definition = "F32 fraction of selected SCC spatial-carrier locations with adequate normalized-convolution support."
+
+[[schemas]]
+constant = "SCC_CARRIER_PHASE_V1"
+name = "scc-carrier-phase"
+element_type = "Float32"
+version = 1
+definition = "Finite F32 detector-space SCC carrier phase in radians and complete detector-pixel order."
+
+[[schemas]]
+constant = "SCC_SPATIAL_FIR_V1"
+name = "scc-spatial-fir"
+element_type = "Float32"
+version = 1
+definition = "Finite F32 normalized-convolution FIR coefficients in tap order."
+
+[[schemas]]
+constant = "SCC_INTERACTION_MATRIX_V1"
+name = "scc-interaction-matrix"
+element_type = "Float32"
+version = 1
+definition = "Finite F32 SCC interaction matrix with measurement rows and controller-coordinate columns."
+
+[[schemas]]
+constant = "SCC_REGULARIZATION_OPERATOR_V1"
+name = "scc-regularization-operator"
+element_type = "Float32"
+version = 1
+definition = "Finite F32 SCC regularization operator with penalty rows and controller-coordinate columns."
+
+[[schemas]]
+constant = "SCC_RECONSTRUCTOR_V1"
+name = "scc-reconstructor"
+element_type = "Float32"
+version = 1
+definition = "F32 selected-pixel-residual to SCC-controller-error reconstructor, with rows in controller-coordinate order and columns in prepared dark-hole pixel order."
+
+[[schemas]]
+constant = "CALIBRATED_PIXEL_READOUT_BLOCK_V1"
+name = "calibrated-pixel-readout-block"
+element_type = "Float32"
+version = 1
+definition = "Calibrated F32 PDE values for one acquisition-ordered readout block. SampleMetadata.offset is the zero-based block ordinal; the prepared detector-readout mapping defines each value's detector coordinate. Published blocks are complete and immutable."
+
+[[schemas]]
+constant = "FLAT_CALIBRATION_V1"
+name = "flat-calibration"
+element_type = "Float32"
+version = 1
+definition = "Complete detector-plane finite F32 flat-calibration coefficients in detector (row, column) axis order, measured in PDE/ADU. This is a sparse prepared artifact rather than a per-frame input."
+
+[[schemas]]
+constant = "BACKGROUND_CALIBRATION_V1"
+name = "background-calibration"
+element_type = "Float32"
+version = 1
+definition = "Complete detector-plane finite F32 background calibration in detector (row, column) axis order, measured in detector ADU. This is a sparse prepared artifact rather than a per-frame input."
+
+[[schemas]]
+constant = "PIXEL_SELECTION_MASK_V1"
+name = "pixel-selection-mask"
+element_type = "Bool"
+version = 1
+definition = "Logical detector-pixel selection mask in detector row-major order."
+
+[[schemas]]
+constant = "REGION_PIXELS_V1"
+name = "region-pixels"
+element_type = "Float32"
+version = 1
+definition = "Calibrated F32 pixels grouped by rectangular detector region."
+
+[[schemas]]
+constant = "CENTER_OF_GRAVITY_PIXELS_V1"
+name = "center-of-gravity-pixels"
+element_type = "Float32"
+version = 1
+definition = "Calibrated F32 pixels for one center-of-gravity region."
+
+[[schemas]]
+constant = "CENTER_OF_GRAVITY_COORDINATES_V1"
+name = "center-of-gravity-coordinates"
+element_type = "Float32"
+version = 1
+definition = "Pair-interleaved F32 X/Y coordinates in selected-pixel order."
+
+[[schemas]]
+constant = "CENTER_OF_GRAVITY_WEIGHTS_V1"
+name = "center-of-gravity-weights"
+element_type = "Float32"
+version = 1
+definition = "Finite nonnegative F32 dimensionless per-pixel center-of-gravity weights in selected-pixel order."
+
+[[schemas]]
+constant = "WEIGHTED_CENTER_OF_GRAVITY_FLUX_V1"
+name = "weighted-center-of-gravity-flux"
+element_type = "Float32"
+version = 1
+definition = "F32 weighted center-of-gravity flux Σ(weight × calibrated pixel) in PDE."
+
+[[schemas]]
+constant = "CENTER_OF_GRAVITY_OFFSET_V1"
+name = "center-of-gravity-offset"
+element_type = "Float32"
+version = 1
+definition = "Measured-minus-reference F32 center-of-gravity X/Y offset."
+
+[[schemas]]
+constant = "CENTER_OF_GRAVITY_FLUX_V1"
+name = "center-of-gravity-flux"
+element_type = "Float32"
+version = 1
+definition = "Selected-region F32 center-of-gravity flux in PDE."
+
+[[schemas]]
+constant = "CENTER_OF_GRAVITY_VALIDITY_V1"
+name = "center-of-gravity-validity"
+element_type = "Bool"
+version = 1
+definition = "Boolean numerical and flux-threshold validity for one measurement."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_SLOPES_V1"
+name = "shack-hartmann-slopes"
+element_type = "Float32"
+version = 1
+definition = "F32 Shack-Hartmann slopes in subaperture-by-X/Y order."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_FLUX_V1"
+name = "shack-hartmann-flux"
+element_type = "Float32"
+version = 1
+definition = "F32 Shack-Hartmann fluxes in subaperture order."
+
+[[schemas]]
+constant = "WEIGHTED_SHACK_HARTMANN_FLUX_V1"
+name = "weighted-shack-hartmann-flux"
+element_type = "Float32"
+version = 1
+definition = "F32 weighted Shack-Hartmann fluxes Σ(weight × calibrated pixel) in subaperture order."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_VALIDITY_V1"
+name = "shack-hartmann-validity"
+element_type = "Bool"
+version = 1
+definition = "Boolean Shack-Hartmann measurement validity in subaperture order."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_SUMMARY_V1"
+name = "shack-hartmann-summary"
+element_type = "Float32"
+version = 1
+channel_shape = [8]
+channels = [
+    {name = "subaperture_count", index = 0, title = "Subaperture count", units = "count"},
+    {name = "valid_count", index = 1, title = "Valid count", units = "count"},
+    {name = "mean_flux", index = 2, title = "Mean valid flux"},
+    {name = "slope_rms_x", index = 3, title = "X slope RMS"},
+    {name = "slope_rms_y", index = 4, title = "Y slope RMS"},
+    {name = "slope_rms", index = 5, title = "Slope RMS"},
+    {name = "mean_x_slope", index = 6, title = "Mean X slope"},
+    {name = "mean_y_slope", index = 7, title = "Mean Y slope"},
+]
+definition = "Eight F32 diagnostics for one complete Shack-Hartmann frame in zero-based order: 0 total subaperture count, 1 valid count, 2 mean valid flux, 3 X slope RMS, 4 Y slope RMS, 5 hypot(X RMS, Y RMS), 6 mean X slope, 7 mean Y slope. Subaperture count is in 1:2^24 so both counts are exact Float32 integers. RMS is uncentered. Only validity-true rows contribute; accumulation uses Float64. Zero valid rows or any nonfinite flux or slope in a valid row yields NaN in fields 2 through 7 while counts retain their validity-derived values. Processing still succeeds. Flux and slopes retain their input units, including detector pixels for pixel-coordinate slopes; these are not calibrated physical tip, tilt, or focus estimates. Inputs belong to the same measurement frame and metadata follows slopes."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_COORDINATES_V1"
+name = "shack-hartmann-coordinates"
+element_type = "Float32"
+version = 1
+definition = "F32 detector-plane X/Y coordinates for one subaperture."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_REFERENCE_SLOPES_V1"
+name = "shack-hartmann-reference-slopes"
+element_type = "Float32"
+version = 1
+definition = "F32 Shack-Hartmann reference slopes in subaperture-by-X/Y order."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_THRESHOLDS_V1"
+name = "shack-hartmann-thresholds"
+element_type = "Float32"
+version = 1
+definition = "F32 pixel and flux thresholds in subaperture order."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_WEIGHTS_V1"
+name = "shack-hartmann-weights"
+element_type = "Float32"
+version = 1
+definition = "Finite nonnegative F32 dimensionless per-subaperture weights in FGA row-major selected-pixel order."
+
+[[schemas]]
+constant = "SHACK_HARTMANN_ACTIVE_V1"
+name = "shack-hartmann-active"
+element_type = "Bool"
+version = 1
+definition = "Boolean Shack-Hartmann active mask in subaperture order."
+
+[[schemas]]
+constant = "SHWFS_RECONSTRUCTOR_V1"
+name = "shwfs-reconstructor"
+element_type = "Float32"
+version = 1
+definition = "F32 matrix mapping pair-interleaved Shack-Hartmann slopes to a controller vector."
+
+[[schemas]]
+constant = "REGION_ORIGINS_V1"
+name = "region-origins"
+element_type = "UInt32"
+version = 1
+definition = "Zero-based U32 `(row, column)` origins for region extraction."
+
+[[schemas]]
+constant = "PYRAMID_RECONSTRUCTION_PIXELS_V1"
+name = "pyramid-reconstruction-pixels"
+element_type = "Float32"
+version = 1
+definition = "Normalized F32 pyramid reconstruction pixels in pupil-major order."
+
+[[schemas]]
+constant = "BI_O_EDGE_FRAME_CALIBRATION_SIGNATURE_V1"
+name = "bi-o-edge-frame-calibration-signature"
+element_type = "UInt64"
+version = 1
+definition = "U64 calibration signature synchronized with one complete calibrated Bi-O-edge detector frame."
+
+[[schemas]]
+constant = "BI_O_EDGE_CALIBRATION_SIGNATURE_V1"
+name = "bi-o-edge-calibration-signature"
+element_type = "UInt64"
+version = 1
+definition = "U64 active calibration signature for complete-frame Bi-O-edge estimation."
+
+[[schemas]]
+constant = "BI_O_EDGE_SIGNAL_V1"
+name = "bi-o-edge-signal"
+element_type = "Float32"
+version = 1
+definition = "F32 calibrated Bi-O-edge differential signal in selected-coordinate X/Y order."
+
+[[schemas]]
+constant = "BI_O_EDGE_NORMALIZATION_DIVISOR_V1"
+name = "bi-o-edge-normalization-divisor"
+element_type = "Float32"
+version = 1
+definition = "F32 positive current-frame divisor used to calibrate a Bi-O-edge differential signal."
+
+[[schemas]]
+constant = "BI_O_EDGE_SUPPORT_V1"
+name = "bi-o-edge-support"
+element_type = "Bool"
+version = 1
+definition = "Boolean FGA-column-major valid support for one Bi-O-edge pupil region."
+
+[[schemas]]
+constant = "BI_O_EDGE_REFERENCE_SIGNAL_V1"
+name = "bi-o-edge-reference-signal"
+element_type = "Float32"
+version = 1
+definition = "F32 Bi-O-edge reference differential signal in selected-coordinate X/Y order."
+
+[[schemas]]
+constant = "BI_O_EDGE_OPTICAL_GAIN_V1"
+name = "bi-o-edge-optical-gain"
+element_type = "Float32"
+version = 1
+definition = "F32 per-component optical gain for a Bi-O-edge differential signal."
+
+[[schemas]]
+constant = "ZERNIKE_PUPIL_SIGNAL_FRAME_CALIBRATION_SIGNATURE_V1"
+name = "zernike-pupil-signal-frame-calibration-signature"
+element_type = "UInt64"
+version = 1
+definition = "U64 calibration signature synchronized with one complete calibrated Zernike pupil frame."
+
+[[schemas]]
+constant = "ZERNIKE_PUPIL_SIGNAL_CALIBRATION_SIGNATURE_V1"
+name = "zernike-pupil-signal-calibration-signature"
+element_type = "UInt64"
+version = 1
+definition = "U64 active calibration signature for complete-frame Zernike pupil estimation."
+
+[[schemas]]
+constant = "ZERNIKE_PUPIL_SIGNAL_V1"
+name = "zernike-pupil-signal"
+element_type = "Float32"
+version = 1
+definition = "F32 calibrated Zernike normalized pupil signal in selected-coordinate order."
+
+[[schemas]]
+constant = "ZERNIKE_PUPIL_SIGNAL_NORMALIZATION_DIVISOR_V1"
+name = "zernike-pupil-signal-normalization-divisor"
+element_type = "Float32"
+version = 1
+definition = "F32 current-frame divisor used to calibrate a Zernike pupil signal."
+
+[[schemas]]
+constant = "ZERNIKE_PUPIL_SIGNAL_SUPPORT_V1"
+name = "zernike-pupil-signal-support"
+element_type = "Bool"
+version = 1
+definition = "Boolean FGA-column-major valid support for a complete Zernike pupil image."
+
+[[schemas]]
+constant = "ZERNIKE_PUPIL_SIGNAL_REFERENCE_PUPIL_IMAGE_V1"
+name = "zernike-pupil-signal-reference-pupil-image"
+element_type = "Float32"
+version = 1
+definition = "F32 complete-frame reference normalized pupil image for Zernike estimation."
+
+[[schemas]]
+constant = "ZERNIKE_PUPIL_SIGNAL_INCIDENCE_FLUX_V1"
+name = "zernike-pupil-signal-incidence-flux"
+element_type = "Float32"
+version = 1
+definition = "F32 accepted incidence-flux calibration divisor for Zernike pupil estimation."
+
+[[schemas]]
+constant = "CURVATURE_PAIRED_IMAGE_V1"
+name = "curvature-paired-image"
+element_type = "Float32"
+version = 1
+definition = "F32 complete detector image with configured positive- and negative-defocus curvature branches."
+
+[[schemas]]
+constant = "CURVATURE_PAIRED_CHANNELS_V1"
+name = "curvature-paired-channels"
+element_type = "Float32"
+version = 1
+definition = "F32 complete branch-by-channel matrix for positive- and negative-defocus curvature estimation."
+
+[[schemas]]
+constant = "CURVATURE_PAIRED_FRAME_CALIBRATION_SIGNATURE_V1"
+name = "curvature-paired-frame-calibration-signature"
+element_type = "UInt64"
+version = 1
+definition = "U64 calibration signature synchronized with one complete paired-curvature input."
+
+[[schemas]]
+constant = "CURVATURE_PAIRED_CALIBRATION_SIGNATURE_V1"
+name = "curvature-paired-calibration-signature"
+element_type = "UInt64"
+version = 1
+definition = "U64 active calibration signature for paired-curvature estimation."
+
+[[schemas]]
+constant = "CURVATURE_PAIRED_SIGNAL_V1"
+name = "curvature-paired-signal"
+element_type = "Float32"
+version = 1
+definition = "F32 reference-subtracted paired-curvature signal in full FGA column-major grid order."
+
+[[schemas]]
+constant = "CURVATURE_PAIRED_SUPPORT_V1"
+name = "curvature-paired-support"
+element_type = "Bool"
+version = 1
+definition = "Boolean valid support for the full FGA column-major paired-curvature signal grid."
+
+[[schemas]]
+constant = "CURVATURE_PAIRED_REFERENCE_SIGNAL_V1"
+name = "curvature-paired-reference-signal"
+element_type = "Float32"
+version = 1
+definition = "F32 paired-curvature reference signal in full FGA column-major grid order."
+
+[[schemas]]
+constant = "CURVATURE_PAIRED_BRANCH_SCALES_V1"
+name = "curvature-paired-branch-scales"
+element_type = "Float32"
+version = 1
+definition = "Two positive finite F32 paired-curvature branch scales in positive- and negative-defocus order."
+
+[[schemas]]
+constant = "PYRAMID_I4Q_SIGNAL_V1"
+name = "pyramid-i4q-signal"
+element_type = "Float32"
+version = 1
+definition = "F32 calibrated pyramid I4Q differential signal in selected-coordinate X/Y order."
+
+[[schemas]]
+constant = "PYRAMID_NORMALIZATION_DIVISOR_V1"
+name = "pyramid-normalization-divisor"
+element_type = "Float32"
+version = 1
+definition = "F32 positive current-frame divisor used to calibrate a pyramid I4Q signal."
+
+[[schemas]]
+constant = "PYRAMID_I4Q_SUPPORT_V1"
+name = "pyramid-i4q-support"
+element_type = "Bool"
+version = 1
+definition = "Boolean FGA-column-major valid support for one pyramid I4Q pupil region."
+
+[[schemas]]
+constant = "PYRAMID_REFERENCE_SIGNAL_V1"
+name = "pyramid-reference-signal"
+element_type = "Float32"
+version = 1
+definition = "F32 pyramid I4Q reference differential signal in selected-coordinate X/Y order."
+
+[[schemas]]
+constant = "PYRAMID_OPTICAL_GAIN_V1"
+name = "pyramid-optical-gain"
+element_type = "Float32"
+version = 1
+definition = "F32 per-component optical gain for a pyramid I4Q differential signal."
+
+[[schemas]]
+constant = "PYRAMID_I4Q_RECONSTRUCTOR_V1"
+name = "pyramid-i4q-reconstructor"
+element_type = "Float32"
+version = 1
+definition = "F32 matrix mapping packed pyramid I4Q X-then-Y signals to a reconstructed vector."
+
+[[schemas]]
+constant = "PYRAMID_MEAN_PUPIL_INTENSITY_V1"
+name = "pyramid-mean-pupil-intensity"
+element_type = "Float32"
+version = 1
+definition = "Current-frame F32 mean intensity across all four pyramid pupils."
+
+[[schemas]]
+constant = "PYRAMID_PUPIL_FLUX_ADU_F64_V1"
+name = "pyramid-pupil-flux-adu"
+element_type = "Float64"
+version = 1
+channel_shape = [4]
+channels = [
+    {name = "pupil_1", index = 0, title = "Pupil 1", units = "ADC counts per exposure"},
+    {name = "pupil_2", index = 1, title = "Pupil 2", units = "ADC counts per exposure"},
+    {name = "pupil_3", index = 2, title = "Pupil 3", units = "ADC counts per exposure"},
+    {name = "pupil_4", index = 3, title = "Pupil 4", units = "ADC counts per exposure"},
+]
+definition = "F64 exact sums of raw U16 detector ADU values over the four configured pyramid-pupil rectangles, in the configured pupil-origin order. Each sum is per exposure and remains in ADC counts; no calibration, mask, normalization, or averaging is applied."
+
+[[schemas]]
+constant = "PYRAMID_PUPIL_MASK_V1"
+name = "pyramid-pupil-mask"
+element_type = "Bool"
+version = 1
+definition = "Shared row-major Boolean pyramid pupil mask."
+
+[[schemas]]
+constant = "PWFS_RECONSTRUCTOR_V1"
+name = "pwfs-reconstructor"
+element_type = "Float32"
+version = 1
+definition = "F32 matrix mapping pupil-major pyramid pixels to a reconstructed vector."
+
+[[schemas]]
+constant = "PDM_CORRECTION_ROLE_V1"
+name = "pdm-correction-role"
+element_type = "UInt8"
+version = 1
+definition = "Physical correction provenance: U8 codes 0 none, 1 controlled, 2 extrapolated, 3 unknown."
+
+[[schemas]]
+constant = "DETECTOR_FRAME_V1"
+name = "detector-frame"
+element_type = "Float32"
+version = 1
+frame_encoding = "float32"
+definition = "Complete detector-plane F32 ADU values in detector (row, column) axis order."
+
+[[schemas]]
+constant = "DETECTOR_EM_OUTPUT_ELECTRONS_V1"
+name = "detector-em-output-electrons"
+element_type = "Float32"
+version = 1
+frame_encoding = "float32"
+definition = "Complete detector-plane F32 samples in electron-multiplication-register output-electron units, in detector (row, column) axis order. The declared acquisition includes electron multiplication and output-referred readout noise; the electron-multiplication gain has not been divided out. Signed read-noise excursions are retained unless the acquisition explicitly declares clipping. This quantity does not imply ADC conversion, quantization, or gain normalization."
+
+[[schemas]]
+constant = "DETECTOR_INPUT_EQUIVALENT_ELECTRONS_V1"
+name = "detector-input-equivalent-electrons"
+element_type = "Float32"
+version = 1
+frame_encoding = "float32"
+definition = "Complete detector-plane F32 samples in input-equivalent electrons, in detector (row, column) axis order. Each electron-multiplication-register output-electron sample, including output-referred readout noise, is divided by the declared positive electron-multiplication gain. Signed read-noise excursions are retained unless the producer explicitly declares clipping. Gain normalization preserves multiplication noise and does not imply ADC conversion or quantization."
+
+[[schemas]]
+constant = "ATMOSPHERE_OPD_M_V1"
+name = "atmosphere-opd-m"
+element_type = "Float32"
+version = 1
+definition = "F32 atmosphere optical path difference in metres on the sampled pupil grid."
+
+[[schemas]]
+constant = "ACTUATOR_COMMAND_OPD_M_V1"
+name = "actuator-command-opd-m"
+element_type = "Float32"
+version = 1
+definition = "F32 actuator commands in metres of wavefront optical path difference, in physical-actuator order."
+
+[[schemas]]
+constant = "TIP_TILT_OPD_COEFFICIENTS_M_V1"
+name = "tip-tilt-opd-coefficients-m"
+element_type = "Float32"
+version = 1
+definition = "Two F32 coefficients in metres of wavefront optical path difference, ordered (X ramp, Y ramp), for the dimensionless normalized-pupil-xy basis. On the supported pupil, the additive OPD is coefficient[1]*X + coefficient[2]*Y. A positive coefficient adds OPD increasing with its corresponding pupil coordinate. These are normalized-pupil ramp amplitudes, not angular pointing values or mirror displacements."
+
+[[schemas]]
+constant = "DM_SURFACE_OPD_M_V1"
+name = "dm-surface-opd-m"
+element_type = "Float32"
+version = 1
+definition = "F32 deformable-mirror wavefront optical path difference in metres on the sampled pupil grid."
+
+[[schemas]]
+constant = "ACTUATOR_GRID_INDICES_V1"
+name = "actuator-grid-indices"
+element_type = "Int32"
+version = 1
+definition = "One-based I32 indices into the column-major square actuator grid, in physical-actuator order. Indices are unique and address the declared grid."
+
+[[schemas]]
+constant = "NORMALIZED_PUPIL_ACTUATOR_COORDINATES_V1"
+name = "normalized-pupil-actuator-coordinates"
+element_type = "Float32"
+version = 1
+definition = "F32 normalized pupil X/Y actuator coordinates in (coordinate, actuator) axis order."
+
+[[schemas]]
+constant = "NORMALIZED_PUPIL_XY_V1"
+name = "normalized-pupil-xy"
+element_type = "Float32"
+version = 1
+definition = "F32 dimensionless Cartesian pupil ramps in (pupil_x, pupil_y, component) axis order with two components: component 1 is X and component 2 is Y. For one-based indices i and j on an Nx-by-Ny raster, X=(i-(Nx+1)/2)/(Nx/2) and Y=(j-(Ny+1)/2)/(Ny/2). The sample centers lie within [-1, 1], with each coordinate increasing along its corresponding array axis. The first two axes use column-major logical order; no pupil support mask is applied to the basis itself."
+
+[[schemas]]
+constant = "ANNULAR_PUPIL_SUPPORT_V1"
+name = "annular-pupil-support"
+element_type = "Bool"
+version = 1
+definition = "Boolean sampled annular pupil support in (pupil_x, pupil_y) axis order matching the first two normalized-pupil-xy axes, in column-major logical order. True marks the transmitting annulus and false marks the central obstruction or exterior. On the normalized cell-centered pupil grid, support includes samples satisfying obstruction_ratio^2 <= X^2 + Y^2 <= 1, with the producer declaring 0 <= obstruction_ratio < 1."
+
+[[schemas]]
+constant = "INFLUENCE_FUNCTIONS_V1"
+name = "influence-functions"
+element_type = "Float32"
+version = 1
+definition = "F32 deformable-mirror influence functions in (sampled pupil pixel, actuator) axis order, using column-major pupil pixel order and physical-actuator order."
+
+[[schemas]]
+constant = "PUPIL_OPD_M_V1"
+name = "pupil-opd-m"
+element_type = "Float32"
+version = 1
+definition = "F32 pupil optical path difference in metres on the sampled pupil grid."
+
+[[schemas]]
+constant = "PHOTON_RATE_V1"
+name = "photon-rate"
+element_type = "Float32"
+version = 1
+definition = "F32 cell-integrated photon rates in photons per second on the configured sensor grid."
+
+[[schemas]]
+constant = "FOCAL_PHOTON_RATE_V1"
+name = "focal-photon-rate"
+element_type = "Float32"
+version = 1
+definition = "F32 cell-integrated focal-plane photon rates in photons per second on the configured focal grid."
+
+[[schemas]]
+constant = "RESIDUAL_PUPIL_OPD_NM_V1"
+name = "residual-pupil-opd-nm"
+element_type = "Float32"
+version = 1
+definition = "F32 residual pupil optical path difference in nanometres on the sampled pupil grid."
+
+[[schemas]]
+constant = "PUPIL_OPD_RMS_NM_V1"
+name = "pupil-opd-rms-nm"
+element_type = "Float32"
+version = 1
+definition = "F32 pupil optical path difference RMS in nanometres, using the configured pupil support."
+
+[[schemas]]
+constant = "APPLIED_PDM_COMMAND_V1"
+name = "applied-pdm-command"
+element_type = "Float32"
+version = 1
+definition = "F32 applied physical-DM commands used by a completed model step, in actuator order and in the declared command units."
+
+[[schemas]]
+constant = "APPLIED_DM_COMMAND_OPD_UM_V1"
+name = "applied-dm-command-opd-um"
+element_type = "Float32"
+version = 1
+definition = "F32 applied physical-DM command in µm wavefront optical path difference, in concatenated actuator order."
+
+[[schemas]]
+constant = "CONTROLLER_TO_TIP_TILT_V1"
+name = "controller-to-tip-tilt"
+element_type = "Float32"
+version = 1
+definition = "F32 dimensionless matrix mapping controller metre-OPD coordinates to normalized-pupil tip/tilt metre-OPD coefficients. Rows are the declared two stage axes."
+
+[[schemas]]
+constant = "TIP_TILT_TO_ACTUATORS_V1"
+name = "tip-tilt-to-actuators"
+element_type = "Float32"
+version = 1
+definition = "F32 dimensionless matrix mapping normalized-pupil tip/tilt metre-OPD coefficients to mirror actuator metre-OPD commands in declared command order."

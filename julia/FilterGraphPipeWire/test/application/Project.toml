@@ -1,0 +1,16 @@
+[deps]
+FilterGraphAlgorithms = "8914fa96-dfe6-4d3c-aced-40e6da1f6420"
+FilterGraphPipeWire = "0366a544-13dd-48a3-a3d6-bd2ba4547294"
+FilterGraphs = "8053475d-7091-4a8a-adbc-8ed688b6da8d"
+PipeWireAO = "5d815c25-fdf3-4508-8205-db8be38ea5d0"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[sources]
+
+[compat]
+FilterGraphAlgorithms = "0.13"
+FilterGraphPipeWire = "0.5.2"
+FilterGraphs = "0.9, 0.10"
+PipeWireAO = "0.9.2"
+Test = "1"
+julia = "1.13"

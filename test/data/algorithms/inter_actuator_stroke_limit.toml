@@ -1,0 +1,51 @@
+# Frozen from the external Rust FGN InterActuatorStrokeLimitF32 implementation
+# at 3d49237b3c9f4423f120b52bd2761cd5a90f5e94. Float32 bit patterns were
+# captured by executing that revision with the cases below.
+
+[[cases]]
+name = "unviolated"
+edges = [[0, 1], [1, 2]]
+max_differences = [0.5, 0.5]
+requested = [0.4, 0.1, -0.2]
+expected = [0.4, 0.1, -0.2]
+expected_bits = [1053609165, 1036831949, 3192704205]
+
+[[cases]]
+name = "restrictive"
+edges = [[0, 1], [1, 2]]
+max_differences = [1.0, 0.25]
+requested = [2.0, -2.0, 1.0]
+expected = [0.16666667, -0.16666667, 0.083333336]
+expected_bits = [1042983595, 3190467243, 1034594987]
+
+[[cases]]
+name = "zero-limit"
+edges = [[0, 1]]
+max_differences = [0.0]
+requested = [1.0, -1.0]
+expected = [0.0, -0.0]
+expected_bits = [0, 2147483648]
+
+[[cases]]
+name = "same-sign"
+edges = [[0, 1]]
+max_differences = [0.5]
+requested = [2.0, 0.0]
+expected = [0.5, 0.0]
+expected_bits = [1056964608, 0]
+
+[[cases]]
+name = "negative-same-sign"
+edges = [[0, 1]]
+max_differences = [0.75]
+requested = [-2.0, -0.5]
+expected = [-1.0, -0.25]
+expected_bits = [3212836864, 3196059648]
+
+[[cases]]
+name = "large-opposite"
+edges = [[0, 1]]
+max_differences = [1.0]
+requested = [3.4028235e38, -3.4028235e38]
+expected = [0.49999997, -0.49999997]
+expected_bits = [1056964607, 3204448255]

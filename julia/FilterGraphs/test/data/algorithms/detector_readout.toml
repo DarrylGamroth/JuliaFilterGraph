@@ -1,0 +1,50 @@
+# Generated snapshot from test/data/algorithms/detector_readout.toml.
+# Regenerate with julia test/update_snapshots.jl test/data/algorithms/detector_readout.toml.
+# Frozen from the external Rust FGN detector-readout oracle at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94.
+
+[configuration]
+detector_rows = 4
+detector_columns = 4
+region_lines = 2
+block_lines = 1
+region_samples = 4
+detector_origins = [[0, 0], [3, 0]]
+detector_line_steps = [[1, 0], [-1, 0]]
+detector_sample_steps = [[0, 1], [0, 1]]
+initial_flat = [
+  1.0, 2.0, 3.0, 4.0,
+  5.0, 6.0, 7.0, 8.0,
+  9.0, 10.0, 11.0, 12.0,
+  13.0, 14.0, 15.0, 16.0,
+]
+initial_background = [
+  1.0, 1.0, 1.0, 1.0,
+  1.0, 1.0, 1.0, 1.0,
+  1.0, 1.0, 1.0, 1.0,
+  1.0, 1.0, 1.0, 1.0,
+]
+
+[expected]
+frame = [
+  2.0, 4.0, 6.0, 8.0,
+  10.0, 12.0, 14.0, 16.0,
+  18.0, 20.0, 22.0, 24.0,
+  26.0, 28.0, 30.0, 32.0,
+]
+
+[[blocks]]
+sequence = 11
+ordinal = 0
+terminal = false
+timestamp_nanoseconds = 100
+raw = [3, 3, 3, 3, 3, 3, 3, 3]
+calibrated = [2.0, 4.0, 6.0, 8.0, 26.0, 28.0, 30.0, 32.0]
+
+[[blocks]]
+sequence = 11
+ordinal = 1
+terminal = true
+timestamp_nanoseconds = 200
+raw = [3, 3, 3, 3, 3, 3, 3, 3]
+calibrated = [10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 22.0, 24.0]

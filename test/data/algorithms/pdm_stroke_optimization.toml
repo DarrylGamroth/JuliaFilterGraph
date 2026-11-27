@@ -1,0 +1,47 @@
+# Frozen from the external Rust FGN PdmStrokeOptimizationF32 implementation at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94. Matrices are row-major and
+# Float32 bit patterns were captured by executing that revision.
+
+[[cases]]
+name = "uniform-piston"
+pdm_size = 3
+null_mode_count = 1
+preferred_command = [0.0, 0.0, 0.0]
+command_to_null_modes = [0.33333334, 0.33333334, 0.33333334]
+null_modes_to_command = [1.0, 1.0, 1.0]
+requested = [4.0, 1.0, -2.0]
+expected = [3.0, 0.0, -3.0]
+expected_bits = [1077936128, 0, 3225419776]
+
+[[cases]]
+name = "preferred-fixed-point"
+pdm_size = 2
+null_mode_count = 1
+preferred_command = [0.5, -0.25]
+command_to_null_modes = [0.5, 0.5]
+null_modes_to_command = [1.0, 1.0]
+requested = [0.5, -0.25]
+expected = [0.5, -0.25]
+expected_bits = [1056964608, 3196059648]
+
+[[cases]]
+name = "independent-maps"
+pdm_size = 2
+null_mode_count = 1
+preferred_command = [0.0, 0.0]
+command_to_null_modes = [0.25, 0.75]
+null_modes_to_command = [2.0, 0.6666667]
+requested = [4.0, 0.0]
+expected = [2.0, -0.6666667]
+expected_bits = [1073741824, 3207244459]
+
+[[cases]]
+name = "two-null-modes"
+pdm_size = 3
+null_mode_count = 2
+preferred_command = [0.25, -0.5, 0.75]
+command_to_null_modes = [0.5, -0.25, 0.125, -0.75, 0.5, 0.25]
+null_modes_to_command = [0.4, -0.2, 0.1, 0.3, -0.5, 0.6]
+requested = [2.0, -1.0, 0.5]
+expected = [1.2874999, -0.609375, 1.959375]
+expected_bits = [1067764940, 3206283264, 1073401037]

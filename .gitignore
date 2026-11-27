@@ -1,0 +1,10 @@
+*.cov
+*.mem
+.julia/
+Manifest.toml
+benchmark/results/*
+!benchmark/results/README.md
+
+__pycache__/
+*.pyc
+gmon.out

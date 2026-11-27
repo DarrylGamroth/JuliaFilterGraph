@@ -1,0 +1,30 @@
+# Frozen from the external Rust FGN PyramidReconstructorF32 contract at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94. Values are exactly representable
+# Float32 numbers so Rust and Julia accumulation order cannot obscure layout.
+
+[configuration]
+reconstructed_count = 3
+selected_pixel_count = 2
+reconstructed_schema = "pipewireao/controller-residual-error-f32/1"
+initial_reconstructor = [
+   1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+   0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5,
+]
+
+[sample]
+reconstruction_pixels = [
+  1.0, 2.0,
+  3.0, 4.0,
+  5.0, 6.0,
+  7.0, 8.0,
+]
+reconstructed = [1.0, 5.0, 3.0]
+
+[replacement]
+reconstructor = [
+  1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+]
+reconstructed = [1.0, 2.0, 3.0]

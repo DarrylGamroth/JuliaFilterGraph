@@ -1,0 +1,18 @@
+# Frozen from the external Rust FGN oracle at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94.
+
+[configuration]
+controller_command_extent = 2
+vdm_size = 2
+
+# Row-major values with logical shape [vdm-coordinate, controller-coordinate].
+[parameter]
+controller_to_vdm = [1.0, 0.5, -0.25, 2.0]
+
+[[samples]]
+controller_command = [0.6, -1.2]
+vdm_command = [0.0, -2.55]
+
+[[samples]]
+controller_command = [-0.4, 0.75]
+vdm_command = [-0.025, 1.6]

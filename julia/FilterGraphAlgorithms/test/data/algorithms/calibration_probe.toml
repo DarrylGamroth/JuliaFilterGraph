@@ -1,0 +1,126 @@
+# Frozen from the external Rust FGN calibration-probe tests at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94. Float32 bit patterns preserve
+# exact positive commands, their signed negatives, and negative zero.
+
+[modal]
+mode_count = 2
+corrector_coordinate_count = 3
+positive_commands = [0.5, -1.0, 0.0, -0.25, 0.5, 2.0]
+
+[[modal.steps]]
+excitation = [0.5, -1.0, 0.0]
+bits = [1056964608, 3212836864, 0]
+pattern_index = 0
+polarity = 0
+completes_cycle = false
+
+[[modal.steps]]
+excitation = [-0.5, 1.0, -0.0]
+bits = [3204448256, 1065353216, 2147483648]
+pattern_index = 0
+polarity = 1
+completes_cycle = false
+
+[[modal.steps]]
+excitation = [-0.25, 0.5, 2.0]
+bits = [3196059648, 1056964608, 1073741824]
+pattern_index = 1
+polarity = 0
+completes_cycle = false
+
+[[modal.steps]]
+excitation = [0.25, -0.5, -2.0]
+bits = [1048576000, 3204448256, 3221225472]
+pattern_index = 1
+polarity = 1
+completes_cycle = true
+
+[zonal]
+amplitudes = [1.0, 2.0]
+
+[[zonal.steps]]
+excitation = [1.0, 0.0]
+bits = [1065353216, 0]
+pattern_index = 0
+polarity = 0
+completes_cycle = false
+
+[[zonal.steps]]
+excitation = [-1.0, 0.0]
+bits = [3212836864, 0]
+pattern_index = 0
+polarity = 1
+completes_cycle = false
+
+[[zonal.steps]]
+excitation = [0.0, 2.0]
+bits = [0, 1073741824]
+pattern_index = 1
+polarity = 0
+completes_cycle = false
+
+[[zonal.steps]]
+excitation = [0.0, -2.0]
+bits = [0, 3221225472]
+pattern_index = 1
+polarity = 1
+completes_cycle = true
+
+[hadamard]
+amplitudes = [1.0, 2.0, 3.0]
+
+[[hadamard.steps]]
+excitation = [1.0, 2.0, 3.0]
+bits = [1065353216, 1073741824, 1077936128]
+pattern_index = 0
+polarity = 0
+completes_cycle = false
+
+[[hadamard.steps]]
+excitation = [-1.0, -2.0, -3.0]
+bits = [3212836864, 3221225472, 3225419776]
+pattern_index = 0
+polarity = 1
+completes_cycle = false
+
+[[hadamard.steps]]
+excitation = [-1.0, 2.0, -3.0]
+bits = [3212836864, 1073741824, 3225419776]
+pattern_index = 1
+polarity = 0
+completes_cycle = false
+
+[[hadamard.steps]]
+excitation = [1.0, -2.0, 3.0]
+bits = [1065353216, 3221225472, 1077936128]
+pattern_index = 1
+polarity = 1
+completes_cycle = false
+
+[[hadamard.steps]]
+excitation = [1.0, -2.0, -3.0]
+bits = [1065353216, 3221225472, 3225419776]
+pattern_index = 2
+polarity = 0
+completes_cycle = false
+
+[[hadamard.steps]]
+excitation = [-1.0, 2.0, 3.0]
+bits = [3212836864, 1073741824, 1077936128]
+pattern_index = 2
+polarity = 1
+completes_cycle = false
+
+[[hadamard.steps]]
+excitation = [-1.0, -2.0, 3.0]
+bits = [3212836864, 3221225472, 1077936128]
+pattern_index = 3
+polarity = 0
+completes_cycle = false
+
+[[hadamard.steps]]
+excitation = [1.0, 2.0, -3.0]
+bits = [1065353216, 1073741824, 3225419776]
+pattern_index = 3
+polarity = 1
+completes_cycle = true

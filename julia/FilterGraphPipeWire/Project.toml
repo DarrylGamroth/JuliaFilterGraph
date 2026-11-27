@@ -1,0 +1,31 @@
+name = "FilterGraphPipeWire"
+uuid = "0366a544-13dd-48a3-a3d6-bd2ba4547294"
+authors = ["Darryl Gamroth <dgamroth@rubus.ca>"]
+version = "0.5.15"
+
+[deps]
+Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
+FilterGraphAlgorithms = "8914fa96-dfe6-4d3c-aced-40e6da1f6420"
+FilterGraphs = "8053475d-7091-4a8a-adbc-8ed688b6da8d"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+PipeWireAO = "5d815c25-fdf3-4508-8205-db8be38ea5d0"
+UnsafeArrays = "c4a57d5a-5b31-53a6-b365-19f8c011fbd6"
+
+[compat]
+Libdl = "1"
+ForwardDiff = "0.10, 1"
+FilterGraphAlgorithms = "0.13.5"
+FilterGraphs = "0.10.9"
+LinearAlgebra = "1.13"
+PipeWireAO = "0.9.7"
+UnsafeArrays = "1"
+julia = "1.13"
+
+[weakdeps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+
+[extensions]
+FilterGraphPipeWireForwardDiffExt = "ForwardDiff"
+
+[workspace]
+projects = ["test"]

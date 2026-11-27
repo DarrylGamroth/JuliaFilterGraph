@@ -1,0 +1,21 @@
+# Frozen from the external Rust FGN oracle at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94.
+
+[configuration]
+active_vdm_size = 2
+full_vdm_size = 3
+physical_actuator_extent = 2
+
+[parameters]
+# Row-major values with logical shape [full-vdm, active-vdm].
+active_to_full = [1.0, 0.0, 0.0, 1.0, 0.5, -1.0]
+# Row-major values with logical shape [physical-actuator, full-vdm].
+vdm_to_pdm = [1.0, 0.0, 0.2, 0.0, 1.0, -0.3]
+
+[[samples]]
+vdm_command = [0.75, -0.4]
+requested_pdm_command = [0.905, -0.6325]
+
+[[samples]]
+vdm_command = [-0.25, 0.5]
+requested_pdm_command = [-0.375, 0.6875]

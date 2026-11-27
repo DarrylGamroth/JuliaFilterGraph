@@ -1,0 +1,59 @@
+name: CPU tests and coverage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [FilterGraphAlgorithms, FilterGraphs, FilterGraphPipeWire]
+    env:
+      JULIA_LOAD_PATH: '@:@stdlib'
+      JULIA_PKG_PRECOMPILE_AUTO: '0'
+      JULIA_PKG_USE_CLI_GIT: 'true'
+      OPENBLAS_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: '1.13'
+      - name: Resolve the CPU test environment
+        env:
+          TEST_PACKAGE: ${{ matrix.package }}
+        run: julia --startup-file=no --project="julia/$TEST_PACKAGE/test" .github/scripts/prepare_cpu_tests.jl
+      - name: Run CPU package tests
+        env:
+          TEST_PACKAGE: ${{ matrix.package }}
+        run: |
+          julia --startup-file=no --threads=3,0 --project="julia/$TEST_PACKAGE/test" \
+            "julia/$TEST_PACKAGE/test/runtests.jl"
+      - name: Collect CPU coverage
+        env:
+          TEST_PACKAGE: ${{ matrix.package }}
+        run: |
+          julia --startup-file=no --threads=3,0 --code-coverage="@${GITHUB_WORKSPACE}/julia" \
+            --project="julia/$TEST_PACKAGE/test" .github/scripts/cpu_coverage.jl "$TEST_PACKAGE"
+      - uses: julia-actions/julia-processcoverage@v1
+        with:
+          directories: julia/FilterGraphAlgorithms/src,julia/FilterGraphAlgorithms/ext,julia/FilterGraphs/src,julia/FilterGraphPipeWire/src,julia/FilterGraphPipeWire/ext
+      - uses: codecov/codecov-action@v5
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          use_oidc: true
+          files: lcov.info
+          flags: ${{ matrix.package }}
+          fail_ci_if_error: true

@@ -1,0 +1,49 @@
+# Frozen from the external Rust FGN PseudoOpenLoopReconstructionF32
+# implementation and tests at 3d49237b3c9f4423f120b52bd2761cd5a90f5e94.
+# Matrices are row-major. Expected Float32 bit patterns encode the exact Rust
+# assertions at that revision.
+
+[[cases]]
+name = "independent-nonidentity-maps"
+measurement_count = 2
+corrector_shape_count = 2
+residual_error_count = 2
+interaction_matrix = [1.0, 2.0, -1.0, 0.5]
+reconstructor = [2.0, -1.0, 0.5, 3.0]
+corrector_to_error = [0.25, -1.0, 2.0, 0.0]
+residual_measurements = [4.0, 2.5]
+corrector_shape = [0.5, -2.0]
+pseudo_open_loop_measurements = [0.5, 1.0]
+pseudo_open_loop_measurement_bits = [1056964608, 1065353216]
+residual_error = [-2.125, 2.25]
+residual_error_bits = [3221749760, 1074790400]
+
+[[cases]]
+name = "matched-corrector-projections"
+measurement_count = 2
+corrector_shape_count = 1
+residual_error_count = 1
+interaction_matrix = [2.0, 1.0]
+reconstructor = [0.5, 1.0]
+corrector_to_error = [2.0]
+residual_measurements = [4.0, 3.0]
+corrector_shape = [1.0]
+pseudo_open_loop_measurements = [6.0, 4.0]
+pseudo_open_loop_measurement_bits = [1086324736, 1082130432]
+residual_error = [5.0]
+residual_error_bits = [1084227584]
+
+[[cases]]
+name = "closed-loop-chain-input"
+measurement_count = 1
+corrector_shape_count = 1
+residual_error_count = 1
+interaction_matrix = [1.0]
+reconstructor = [1.0]
+corrector_to_error = [1.0]
+residual_measurements = [2.0]
+corrector_shape = [3.0]
+pseudo_open_loop_measurements = [5.0]
+pseudo_open_loop_measurement_bits = [1084227584]
+residual_error = [2.0]
+residual_error_bits = [1073741824]

@@ -1,0 +1,50 @@
+# Frozen from the external Rust FGN Shack-Hartmann image and centroid oracles at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94.
+
+[configuration]
+image_rows = 3
+image_columns = 7
+subaperture_rows = 2
+subaperture_columns = 3
+subaperture_count = 2
+initial_subaperture_origins = [[0, 1], [1, 3]]
+coordinate_scale = 1.0
+pixel_threshold = 0.0
+flux_threshold = 1.0
+reference_slopes = [0.25, -0.5, -0.75, 0.25]
+active = [true, true]
+
+[sample]
+image = [
+  1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,
+  8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0,
+  15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0,
+]
+slopes = [[-0.1474359, 0.7692308], [0.7930108, -0.13709678]]
+flux = [39.0, 93.0]
+validity = [true, true]
+
+[coordinate_replacement]
+values = [
+  [-2.0, -1.0], [0.0, -1.0], [2.0, -1.0],
+  [-2.0, 1.0], [0.0, 1.0], [2.0, 1.0],
+]
+slopes = [[-0.044871792, 1.0384616], [0.8360215, -0.024193555]]
+
+[reference_replacement]
+values = [[0.0, 0.0], [0.0, 0.0]]
+slopes = [[0.102564104, 0.26923078], [0.043010753, 0.11290322]]
+
+[threshold_replacement]
+values = [[10.0, 20.0], [15.0, 50.0]]
+slopes = [[0.27380955, 1.0], [0.7850877, 0.25]]
+flux = [21.0, 57.0]
+
+[active_replacement]
+values = [false, true]
+slopes = [[0.0, 0.0], [0.7930108, -0.13709678]]
+
+[origin_replacement]
+values = [[1, 3], [0, 1]]
+slopes = [[-0.20698924, 0.61290324], [0.8525641, 0.019230783]]
+flux = [93.0, 39.0]

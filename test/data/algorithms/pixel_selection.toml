@@ -1,0 +1,29 @@
+# Frozen from the external Rust FGN pixel-selection oracle at
+# 3d49237b3c9f4423f120b52bd2761cd5a90f5e94.
+
+[configuration]
+image_rows = 3
+image_columns = 4
+mask = [
+  false, true, true, false,
+  true, false, false, true,
+  false, true, false, true,
+]
+input_schema = "pipewireao/calibrated-pixels-f32/1"
+output_schema = "example/selected-calibrated-pixels-f32/1"
+
+[sample]
+image = [
+  100.0, 101.0, 102.0, 103.0,
+  104.0, 105.0, 106.0, 107.0,
+  108.0, 109.0, 110.0, 111.0,
+]
+selected = [101.0, 102.0, 104.0, 107.0, 109.0, 111.0]
+
+[replacement]
+mask = [
+  true, false, false, true,
+  false, true, true, false,
+  true, false, true, false,
+]
+selected = [100.0, 103.0, 105.0, 106.0, 108.0, 110.0]

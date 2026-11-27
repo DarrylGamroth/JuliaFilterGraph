@@ -1,0 +1,28 @@
+# Frozen complete-frame PyramidReconstructorF32 signal contract. Values are
+# exactly representable Float32 numbers so packed [all X; all Y] ordering is
+# independently visible in the expected reconstructed vector.
+
+[configuration]
+reconstructed_count = 3
+selected_coordinate_count = 2
+reconstructed_schema = "pipewireao/controller-residual-error-f32/1"
+initial_reconstructor = [
+   1.0, 0.0, 0.0, 0.0,
+   0.0, 1.0, 1.0, 0.0,
+  -1.0, 0.0, 0.0, 1.0,
+]
+
+[sample]
+signal = [
+  1.0, 2.0,
+  3.0, 4.0,
+]
+reconstructed = [1.0, 5.0, 3.0]
+
+[replacement]
+reconstructor = [
+   1.0, 0.0, 0.0, 0.0,
+   0.0, 1.0, 0.0, 0.0,
+   0.0, 0.0, 1.0, 0.0,
+]
+reconstructed = [1.0, 3.0, 2.0]

@@ -1,0 +1,63 @@
+# Generated snapshot receipts; canonical sources are listed below.
+# Regenerate selected copies and hashes with julia test/update_snapshots.jl <source>...
+format_version = 1
+
+[[snapshot]]
+source = "test/data/algorithms/closed_loop_correction.toml"
+path = "algorithms/closed_loop_correction.toml"
+sha256 = "daffbcbc8ab63f9fa037a76fdd7b4ae84931495edc6077c8cc4c356acf76e3c5"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/detector_readout.toml"
+path = "algorithms/detector_readout.toml"
+sha256 = "38407c8524d87fe8d385801e16ea9784d506d7e1378fc66b67a8d6134bb44e6c"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_pixel_row.toml"
+path = "algorithms/pyramid_pixel_row.toml"
+sha256 = "970f40dd565b15b51515eca9584ab1f93cd01576f81bfdb546c6249725c2d6be"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_readout_reconstruction.toml"
+path = "algorithms/pyramid_readout_reconstruction.toml"
+sha256 = "9d18c33a4edb0eb0dc978bf23bae850bf0d166db1a26a60d995597e49c0235c1"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_row_reconstruction.toml"
+path = "algorithms/pyramid_row_reconstruction.toml"
+sha256 = "268f9db78fe037c4e482ac4b392b39db93a5f97811b72b2684546d37558076cf"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/shack_hartmann_image.toml"
+path = "algorithms/shack_hartmann_image.toml"
+sha256 = "32c780537d65fab75964dcd10c98d922e6fe155e74e0ffb3b0558e30b8dab206"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/shack_hartmann_readout_reconstruction.toml"
+path = "algorithms/shack_hartmann_readout_reconstruction.toml"
+sha256 = "f89f6bb23270c2f9e05622045d68662a6ef7cf044c059b7825e144fc3082e070"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/shack_hartmann_row_reconstruction.toml"
+path = "algorithms/shack_hartmann_row_reconstruction.toml"
+sha256 = "30461c218025a49ea81c8b500725a5db2253e739f4ffb775a120515ad0a46e10"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/structured_interaction_matrix.toml"
+path = "algorithms/structured_interaction_matrix.toml"
+sha256 = "50be24730de1711c114bb8b4705ca4fbd7ca387f5bd8157642afe6c2c9952716"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/support/captured_feedback.jl"
+path = "support/captured_feedback.jl"
+sha256 = "ae18cf0f4bf4a1a93b8edf3c4720ebf8bf41a205ec763729cb277e1b97395cb2"
+generated_header_lines = 2

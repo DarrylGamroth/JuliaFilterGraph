@@ -1,0 +1,208 @@
+# Generated snapshot receipts; canonical sources are listed below.
+# Regenerate selected copies and hashes with julia test/update_snapshots.jl <source>...
+format_version = 1
+
+[[snapshot]]
+source = "test/data/algorithms/bi_o_edge_image_synthetic.toml"
+path = "algorithms/bi_o_edge_image_synthetic.toml"
+sha256 = "e38776e8a9645aaaf7ab64b9d20d70af5576d1c934875350951bcdd0ccfa3bf8"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/calibration_probe.toml"
+path = "algorithms/calibration_probe.toml"
+sha256 = "b0fdaf1f5650c6c8c12e20a6413213ab00f607b91dd8ef33d36d7fa61c80da8b"
+
+[[snapshot]]
+source = "test/data/algorithms/center_of_gravity.toml"
+path = "algorithms/center_of_gravity.toml"
+sha256 = "25458b5e39dbb4f855903fa1abd41a971644717c893597d64e3b3231d3e45a50"
+
+[[snapshot]]
+source = "test/data/algorithms/closed_loop_correction.toml"
+path = "algorithms/closed_loop_correction.toml"
+sha256 = "565f1c565e80833032100e58c09fb848007f449458067564dc25204ba3a211b0"
+
+[[snapshot]]
+source = "test/data/algorithms/controller_to_vdm.toml"
+path = "algorithms/controller_to_vdm.toml"
+sha256 = "e3c36980928186be4e142f810df0cfac9520ebc5eceecdc061218f4d1eb0a4ab"
+
+[[snapshot]]
+source = "test/data/algorithms/curvature_paired_signal_synthetic.toml"
+path = "algorithms/curvature_paired_signal_synthetic.toml"
+sha256 = "41b886da26d4f843625d179e4ce79ec63a154783edcbfcad32d9a5d2d69e4864"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/detector_readout.toml"
+path = "algorithms/detector_readout.toml"
+sha256 = "dd6146de5a9355dab1240ed5e62a3845bc5885e5d2f46b25dac46b75af6f5945"
+
+[[snapshot]]
+source = "test/data/algorithms/docrime_covariance.toml"
+path = "algorithms/docrime_covariance.toml"
+sha256 = "a609f9463fd510be01150e8b0d0efce811c0171bb0bd142b0774135a77db2687"
+
+[[snapshot]]
+source = "test/data/algorithms/docrime_excitation.toml"
+path = "algorithms/docrime_excitation.toml"
+sha256 = "b38167e142c6c83b64a87ee2fae32b8d5b4303d7fd579602b1a93b6ed21d0ab1"
+
+[[snapshot]]
+source = "test/data/algorithms/docrime_interaction_matrix.toml"
+path = "algorithms/docrime_interaction_matrix.toml"
+sha256 = "658a8572c4e0c8f01c3032579f4d3e959f881324dd1babd20ff64470c8147aa4"
+
+[[snapshot]]
+source = "test/data/algorithms/inter_actuator_stroke_limit.toml"
+path = "algorithms/inter_actuator_stroke_limit.toml"
+sha256 = "06e7b67883574564cd93114023fc413c9655b4dc5736b0b66842cb5ee7538b11"
+
+[[snapshot]]
+source = "test/data/algorithms/interaction_matrix_stability.toml"
+path = "algorithms/interaction_matrix_stability.toml"
+sha256 = "c36f2c4e351015343c8040eb8f33c0f19d759c596551ad6f312eea82bb079a3c"
+
+[[snapshot]]
+source = "test/data/algorithms/leaky_integrator_declaration.toml"
+path = "algorithms/leaky_integrator_declaration.toml"
+sha256 = "0494b4fc327aa75591258c38cd74cc7eaed787f0aecae73af55d5b2a90c1fe19"
+
+[[snapshot]]
+source = "test/data/algorithms/leaky_integrator_properties.toml"
+path = "algorithms/leaky_integrator_properties.toml"
+sha256 = "98781865ecde4b3d3cb55256fa2d2202b83c799d6623ae69d121114d76100d76"
+
+[[snapshot]]
+source = "test/data/algorithms/matched_calibration_differencing.toml"
+path = "algorithms/matched_calibration_differencing.toml"
+sha256 = "ad4f780a27077cc5d7385a25a3f89c402f9a9be210b6c450889ef97ecbfb9d87"
+
+[[snapshot]]
+source = "test/data/algorithms/pdm_command.toml"
+path = "algorithms/pdm_command.toml"
+sha256 = "a8e6140f991ebc49f9a6fbe00c4638f73e37894e26b12443e2d1372e3278040a"
+
+[[snapshot]]
+source = "test/data/algorithms/pdm_command_power_limit.toml"
+path = "algorithms/pdm_command_power_limit.toml"
+sha256 = "388d12f3a7d56165b290fbd4fbe4acaefc3020f854d5069b0118278beeeffc4f"
+
+[[snapshot]]
+source = "test/data/algorithms/pdm_feedback_to_vdm.toml"
+path = "algorithms/pdm_feedback_to_vdm.toml"
+sha256 = "6f90d67d08e27baa9474821eabdf86095773d73540f9e600c9ceb282ed76cafb"
+
+[[snapshot]]
+source = "test/data/algorithms/pdm_stroke_optimization.toml"
+path = "algorithms/pdm_stroke_optimization.toml"
+sha256 = "1a74e4b91129b07651b781fb334e3d3e84ac511202e74b13d3e56754ec023670"
+
+[[snapshot]]
+source = "test/data/algorithms/pixel_calibration.toml"
+path = "algorithms/pixel_calibration.toml"
+sha256 = "837143209023a25282d516073dc0a65c585024db04ab2a4ee2d918e16d31bf79"
+
+[[snapshot]]
+source = "test/data/algorithms/pixel_calibration_row.toml"
+path = "algorithms/pixel_calibration_row.toml"
+sha256 = "47f02df89f5cc0272c46d9d0839f7c9c645e1e3c1de6bc1db961c3f9cfe82121"
+
+[[snapshot]]
+source = "test/data/algorithms/pixel_selection.toml"
+path = "algorithms/pixel_selection.toml"
+sha256 = "f6dbb68b54c53f2c588a2f375ea4d7fdf20cd2b36c826093b4026775089ab0dd"
+
+[[snapshot]]
+source = "test/data/algorithms/pseudo_open_loop_reconstruction.toml"
+path = "algorithms/pseudo_open_loop_reconstruction.toml"
+sha256 = "72687f91f71eb0c8110dcd2028cb261c8b0bc4ba95ae0e14753e5fbf3a2e49f4"
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_image_synthetic.toml"
+path = "algorithms/pyramid_image_synthetic.toml"
+sha256 = "143abc5b04697f08bf329d1d4033fd27b95f182b6491d5128b2853cc39a45ab3"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_pixel_row.toml"
+path = "algorithms/pyramid_pixel_row.toml"
+sha256 = "9498bc47fdf2f664ab14ed97b69cddc576bc6f77c9aa64e4d118288363bc98dd"
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_pupil_reconstruction.toml"
+path = "algorithms/pyramid_pupil_reconstruction.toml"
+sha256 = "4eb3b629059166aa52e45c8b0ee72898868a4f78516645a72dbec9644c74923d"
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_readout_reconstruction.toml"
+path = "algorithms/pyramid_readout_reconstruction.toml"
+sha256 = "d1334ae75fcb837c4bb40bf010c37ff3073f81e8371f68c313cd88c3759e9cb2"
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_reconstruction.toml"
+path = "algorithms/pyramid_reconstruction.toml"
+sha256 = "4e23ce9eb13b643f3c2e76f03b9546399ec44413098d0ba06974b56c7c647833"
+
+[[snapshot]]
+source = "test/data/algorithms/pyramid_row_reconstruction.toml"
+path = "algorithms/pyramid_row_reconstruction.toml"
+sha256 = "e069a601fadb6c3f53e8055f113807d744720a795d6ea085ac3da31633cb9de7"
+
+[[snapshot]]
+source = "test/data/algorithms/region_extraction.toml"
+path = "algorithms/region_extraction.toml"
+sha256 = "791c70d9e84c955ae72f65481e2e75835e55878bcd14e1ea5a9ab54170c53122"
+
+[[snapshot]]
+source = "test/data/algorithms/scc_reconstruction.toml"
+path = "algorithms/scc_reconstruction.toml"
+sha256 = "eb1f4d26e823d35c8bee6d7270879f4f40c037a1e52cf17044c9de470470cc73"
+
+[[snapshot]]
+source = "test/data/algorithms/shack_hartmann_synthetic.toml"
+path = "algorithms/shack_hartmann_synthetic.toml"
+sha256 = "8cbf1c883b4a1b60688816dbc46c2cfa92c3562b7a4cf8da773c6193c3c5261f"
+generated_header_lines = 2
+
+[[snapshot]]
+source = "test/data/algorithms/shack_hartmann_image.toml"
+path = "algorithms/shack_hartmann_image.toml"
+sha256 = "087674a9020a19d00b8c2e1ed435c72189a586929399cdc7c531041b78ff9a58"
+
+[[snapshot]]
+source = "test/data/algorithms/shack_hartmann_readout_reconstruction.toml"
+path = "algorithms/shack_hartmann_readout_reconstruction.toml"
+sha256 = "2dc01f2433f485d2e9bdf1e35f3dee241e5bd2dcb4d99526f8241cccdad7aead"
+
+[[snapshot]]
+source = "test/data/algorithms/shack_hartmann_reconstruction.toml"
+path = "algorithms/shack_hartmann_reconstruction.toml"
+sha256 = "abbeb6e06ce70ea5c6d914b537e988a68d41d84890d6802554cfc10c5c80f3c5"
+
+[[snapshot]]
+source = "test/data/algorithms/shack_hartmann_row_reconstruction.toml"
+path = "algorithms/shack_hartmann_row_reconstruction.toml"
+sha256 = "aebcf57911bcf8f52e85bc27799cbf0fb59d79ef0481fd5be435023ce9aaf5d4"
+
+[[snapshot]]
+source = "test/data/algorithms/structured_interaction_matrix.toml"
+path = "algorithms/structured_interaction_matrix.toml"
+sha256 = "141ca863d93707ddc5513388d22ae287d2623f65b7ccf37bb8970a6b5387e190"
+
+[[snapshot]]
+source = "test/data/algorithms/vdm_feedback_to_controller.toml"
+path = "algorithms/vdm_feedback_to_controller.toml"
+sha256 = "2b1bf269d8d32de2265939b0ff2f992d0413fef622012e98f6115026783264ab"
+
+[[snapshot]]
+source = "test/data/algorithms/vdm_to_pdm.toml"
+path = "algorithms/vdm_to_pdm.toml"
+sha256 = "88f785064fb90b5a768fbbc7eb8c617286cb8d35387f36f3bdf335e0c5469cb5"
+
+[[snapshot]]
+source = "test/data/algorithms/zernike_pupil_signal_synthetic.toml"
+path = "algorithms/zernike_pupil_signal_synthetic.toml"
+sha256 = "26328123e628255a0052926a556efd4caf3d8655c17ae1acf47438d772a609a4"
+generated_header_lines = 2
