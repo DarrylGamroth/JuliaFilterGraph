@@ -9,26 +9,9 @@ physical unit.
 
 `FilterGraphAlgorithms` exposes the matching constants and docstrings from the
 generated [`schemas.jl`](../julia/FilterGraphAlgorithms/src/schemas.jl).
-Optional scalar channel declarations and their source publication are defined in
-the [source channel contract](../docs/source-channels.md).
-
-From the repository root, regenerate the Julia source after changing the catalog
-and check that it is current with:
-
-```sh
-julia scripts/generate_schemas.jl
-julia scripts/generate_schemas.jl --check
-# Generate consumer projections from this same catalog:
-julia scripts/generate_schemas.jl --rtc /path/to/rtc --gui /path/to/gui --hil /path/to/hil
-julia scripts/generate_schemas.jl --check --rtc /path/to/rtc --gui /path/to/gui --hil /path/to/hil
-```
-
-The repository tests also require each exported schema constant to have exactly
-one catalog entry and require the generated source to match the catalog.
-The optional outputs are RTC `data/schemas.yaml`, GUI `src/schemas.rs`, and HIL
-`src/schemas.jl`. They are generated projections; edit this catalog and regenerate.
-RTC records contain the ID, Julia element type, and SPA ndarray element-type name.
-Detector-frame schemas also declare their frame encoding where applicable.
+Some catalog entries also declare scalar channels within an output packet.
+FilterGraphPipeWire publishes those channel names and indices in the
+`pipewireao.ndarray.channels` property. [Source channel metadata](../julia/FilterGraphPipeWire/src/source_channels.jl)
 
 `FilterGraphAlgorithms.schema_element_type(id)` returns the declared Julia type
 for a known ID and `nothing` for an external schema. Scientific Port declarations
@@ -42,8 +25,7 @@ meanings, logical ordering, validity rules, and compatibility policy. It does
 not redefine the generic ndarray element type, shape, layout, or rate fields
 owned by the graph host. Identifiers are opaque at runtime: PipeWire and graph
 endpoints compare the complete identifier exactly and do not parse scientific
-meaning from it. See the [architecture guide](../docs/architecture.md) for the
-boundary between scientific schemas and graph transport fields.
+meaning from it.
 
 ## Shack–Hartmann summary packet
 
